@@ -13,8 +13,8 @@
  * @property integer $fld_user_stat
  *
  * The followings are the available model relations:
- * @property TblLibrary[] $tblLibraries
- * @property TblPubNote[] $tblPubNotes
+ * @property TaggedPublication[] $tags
+ * @property Note[] $notes
  */
 class User extends CActiveRecord
 {
@@ -35,8 +35,15 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fld_name, fld_username, fld_password, fld_email_address', 'required'),
+			array('fld_email_address', 'email'),
+			array('firstName, lastName, midName, fld_username, fld_password, checkPassword, fld_email_address', 'required', 'on'=>'register'),
+			array('fld_username', 'unique'),
+			array('fld_username', 'length', 'min'=>8),
+			array('fld_password', 'length', 'min'=>5),
+			array('firstName, lastName, midName', 'length','min'=>1),
 			array('fld_user_stat', 'numerical', 'integerOnly'=>true),
 			array('fld_username, fld_password, fld_restrictions', 'length', 'max'=>50),
+			array('checkPassword', 'compare', 'compareAttribute'=>'fld_password', 'on'=>'register'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('key_user, fld_name, fld_username, fld_password, fld_email_address, fld_restrictions, fld_user_stat', 'safe', 'on'=>'search'),
@@ -51,11 +58,16 @@ class User extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblLibraries' => array(self::HAS_MANY, 'TblLibrary', 'key_user'),
-			'tblPubNotes' => array(self::HAS_MANY, 'TblPubNote', 'key_user'),
+			'tags' => array(self::HAS_MANY, 'TaggedPublication', 'key_user'),
+			'notes' => array(self::HAS_MANY, 'Note', 'key_user'),
 		);
 	}
 
+	public $firstName="";
+	public $lastName="";
+	public $midName="";
+	public $checkPassword="";
+	
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -63,13 +75,22 @@ class User extends CActiveRecord
 	{
 		return array(
 			'key_user' => 'Key User',
-			'fld_name' => 'Fld Name',
-			'fld_username' => 'Fld Username',
-			'fld_password' => 'Fld Password',
-			'fld_email_address' => 'Fld Email Address',
-			'fld_restrictions' => 'Fld Restrictions',
-			'fld_user_stat' => 'Fld User Stat',
+			'fld_name' => 'Name',
+			'fld_username' => 'Username',
+			'fld_password' => 'Password',
+			'fld_email_address' => 'Email Address',
+			'fld_restrictions' => 'Account Restrictions',
+			'fld_user_stat' => 'Account Status',
+				
+			'firstName'=>'Given Name',
+			'lastName'=>'Surname',
+			'midName'=>'Middle Name/Initial',
+			'checkPassword'=>'Confirm Password'
 		);
+	}
+	
+	public function assembleName(){
+		return strtoupper($this->firstName." ".substr($this->midName, 0, 1).". ".$this->lastName);
 	}
 
 	/**

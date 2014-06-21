@@ -98,6 +98,30 @@ class SiteController extends Controller
 		$this->render('login',array('model'=>$model));
 	}
 
+	public function actionRegister(){
+		$model=new User('register');
+		
+		// if it is ajax validation request
+		if(isset($_POST['ajax']) && $_POST['ajax']==='signup-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+		
+		// collect user input data
+		if(isset($_POST['User']))
+		{
+			$model->attributes=$_POST['User'];
+			$model->fld_name=$model->assembleName();
+			if($model->validate() && $model->save()){
+				Yii::app()->user->setFlash('register', '<b>REGISTRATION SUCCESSFULL!</b>&nbsp;Please wait for at least 1 day to process your account and access our research repository. Thank you.');
+				$this->refresh();
+			}
+				//$this->redirect(Yii::app()->user->returnUrl);
+		}
+		// display the login form
+		$this->render('signup',array('model'=>$model));
+	}
 	/**
 	 * Logs out the current user and redirect to homepage.
 	 */
