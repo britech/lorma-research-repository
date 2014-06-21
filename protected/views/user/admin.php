@@ -45,12 +45,12 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'key_user',
+		/* 'key_user', */
 		'fld_name',
-		'fld_username',
+		/* 'fld_username',
 		'fld_password',
 		'fld_email_address',
-		'fld_restrictions',
+		'fld_restrictions', */
 		/*
 		'fld_user_stat',
 		*/
