@@ -1,0 +1,130 @@
+<?php
+
+/**
+ * This is the model class for table "tbl_pub".
+ *
+ * The followings are the available columns in table 'tbl_pub':
+ * @property integer $key_pub
+ * @property string $fld_pub_title
+ * @property integer $fld_txt_page
+ * @property integer $fld_no_page
+ * @property string $fld_location
+ * @property integer $key_dept
+ * @property string $fld_date_stored
+ * @property string $fld_format_type
+ * @property integer $fld_is_visible
+ *
+ * The followings are the available model relations:
+ * @property TblLibrary[] $tblLibraries
+ * @property TblDept $keyDept
+ * @property TblPubAuthor[] $tblPubAuthors
+ * @property TblPubFile[] $tblPubFiles
+ * @property TblPubKeyword[] $tblPubKeywords
+ * @property TblPubNote[] $tblPubNotes
+ */
+class Publication extends CActiveRecord
+{
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return 'tbl_pub';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('fld_pub_title, fld_txt_page, fld_no_page, fld_location, key_dept, fld_date_stored', 'required'),
+			array('fld_txt_page, fld_no_page, key_dept, fld_is_visible', 'numerical', 'integerOnly'=>true),
+			array('fld_format_type', 'length', 'max'=>50),
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('key_pub, fld_pub_title, fld_txt_page, fld_no_page, fld_location, key_dept, fld_date_stored, fld_format_type, fld_is_visible', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+			'tblLibraries' => array(self::HAS_MANY, 'TblLibrary', 'key_pub'),
+			'keyDept' => array(self::BELONGS_TO, 'TblDept', 'key_dept'),
+			'tblPubAuthors' => array(self::HAS_MANY, 'TblPubAuthor', 'key_pub'),
+			'tblPubFiles' => array(self::HAS_MANY, 'TblPubFile', 'key_pub'),
+			'tblPubKeywords' => array(self::HAS_MANY, 'TblPubKeyword', 'key_pub'),
+			'tblPubNotes' => array(self::HAS_MANY, 'TblPubNote', 'key_pub'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'key_pub' => 'Key Pub',
+			'fld_pub_title' => 'Fld Pub Title',
+			'fld_txt_page' => 'Fld Txt Page',
+			'fld_no_page' => 'Fld No Page',
+			'fld_location' => 'Fld Location',
+			'key_dept' => 'Key Dept',
+			'fld_date_stored' => 'Fld Date Stored',
+			'fld_format_type' => 'Fld Format Type',
+			'fld_is_visible' => 'Fld Is Visible',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('key_pub',$this->key_pub);
+		$criteria->compare('fld_pub_title',$this->fld_pub_title,true);
+		$criteria->compare('fld_txt_page',$this->fld_txt_page);
+		$criteria->compare('fld_no_page',$this->fld_no_page);
+		$criteria->compare('fld_location',$this->fld_location,true);
+		$criteria->compare('key_dept',$this->key_dept);
+		$criteria->compare('fld_date_stored',$this->fld_date_stored,true);
+		$criteria->compare('fld_format_type',$this->fld_format_type,true);
+		$criteria->compare('fld_is_visible',$this->fld_is_visible);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return Publication the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+}
