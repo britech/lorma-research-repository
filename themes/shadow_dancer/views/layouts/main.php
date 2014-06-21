@@ -74,18 +74,25 @@
 				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
             ),
     )); */?> --->
-	<div id="mainmenu">
-    
-		<?php $this->widget('zii.widgets.CMenu',array(
-			'items'=>array(
-				array('label'=>'Dashboard', 'url'=>array('/site/index')),
-				array('label'=>'Graphs', 'url'=>array('/site/page', 'view'=>'graphs'),'itemOptions'=>array('class'=>'icon_chart')),
-				array('label'=>'Form', 'url'=>array('/site/page', 'view'=>'forms')),
-				array('label'=>'Interface', 'url'=>array('/site/page', 'view'=>'interface')),				
-				array('label'=>'Buttons & Icons', 'url'=>array('/site/page', 'view'=>'buttons_and_icons')),
-				array('label'=>'Error Pages', 'url'=>array('/site/page', 'view'=>'Demo 404 page')),
-			),
+	<div id="nav-container">
+    	<div id="nav-bar">
+		<?php 
+		$items=array();
+		
+		if(Yii::app()->user->isGuest){
+			$links=array(array('label'=>'Publication Directory', 'url'=>array('publication/index')));
+		} else{
+			$links=array(array('label'=>'Publications', 'url'=>array('publication/index')),
+						 array('label'=>'Users', 'url'=>array('user/index')),
+						 array('label'=>'Departments', 'url'=>array('department/index')));
+		}
+		$items=array_merge($links);
+		
+		$this->widget('zii.widgets.CMenu',array(
+			'items'=>$items,
+			'htmlOptions'=>array('id'=>'nav')
 		)); ?>
+		</div>
 	</div> <!--mainmenu -->
 	<?php if(isset($this->breadcrumbs)):?>
 		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
