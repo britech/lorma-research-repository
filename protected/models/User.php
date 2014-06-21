@@ -46,7 +46,7 @@ class User extends CActiveRecord
 			array('checkPassword', 'compare', 'compareAttribute'=>'fld_password', 'on'=>'register'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('key_user, fld_name, fld_username, fld_password, fld_email_address, fld_restrictions, fld_user_stat', 'safe', 'on'=>'search'),
+			array('key_user, fld_name, fld_username, fld_password, fld_email_address, fld_restrictions', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,7 +74,7 @@ class User extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'key_user' => 'Key User',
+			'key_user' => 'User ID',
 			'fld_name' => 'Name',
 			'fld_username' => 'Username',
 			'fld_password' => 'Password',
@@ -117,7 +117,7 @@ class User extends CActiveRecord
 		$criteria->compare('fld_password',$this->fld_password,true);
 		$criteria->compare('fld_email_address',$this->fld_email_address,true);
 		$criteria->compare('fld_restrictions',$this->fld_restrictions,true);
-		$criteria->compare('fld_user_stat',$this->fld_user_stat);
+		//$criteria->compare('fld_user_stat',$this->fld_user_stat);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
