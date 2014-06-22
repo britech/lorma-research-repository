@@ -29,6 +29,18 @@ class User extends CActiveRecord
 		return $this->getRestrictionList()[$restriction];
 	}
 	
+	const STATUS_PENDING = 0;
+	const STATUS_ACTIVE = 1;
+	const STATUS_BLOCKED = -1;
+	public function getStatusList(){
+		return array(self::STATUS_PENDING=>'Pending for Activation',
+					 self::STATUS_ACTIVE=>'Active',
+					 self::STATUS_BLOCKED=>'Blocked Access');
+	}
+	public function getStatusDescription($status){
+		return $this->getStatusList()[$status];
+	}
+	
 	/**
 	 * @return string the associated database table name
 	 */
