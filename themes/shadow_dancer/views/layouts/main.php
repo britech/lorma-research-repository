@@ -80,7 +80,7 @@
 		$items=array();
 		
 		if(Yii::app()->user->isGuest){
-			$links=array(array('label'=>'Publication Directory', 'url'=>array('/publication')));
+			$links=array(array('label'=>'Publication Directory', 'url'=>array('publication/index')),);
 		} else{
 			$links=array(array('label'=>'Publications', 'url'=>array('publication/index')),
 						 array('label'=>'Users', 'url'=>array('user/index')),
