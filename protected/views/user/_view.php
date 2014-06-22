@@ -17,6 +17,6 @@
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_user_stat')); ?>:</b>
-	<?php echo $data->fld_user_stat==0 ? "Pending for Activation" : ($data->fld_user_stat==1 ? "Active" : "Blocked"); ?>
+	<?php echo $data->getStatusDescription($data->fld_user_stat); ?>
 	<br />
 </div>
