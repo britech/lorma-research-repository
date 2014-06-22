@@ -120,6 +120,7 @@ class SiteController extends Controller
 				//$this->redirect(Yii::app()->user->returnUrl);
 		}
 		// display the login form
+		$model->fld_restrictions=User::RESTRICTION_REGULAR;
 		$this->render('signup',array('model'=>$model));
 	}
 	/**

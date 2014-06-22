@@ -70,7 +70,7 @@ $this->breadcrumbs=array(
 		<?php echo $form->labelEx($model,'checkPassword'); ?>
 		<?php echo $form->passwordField($model,'checkPassword'); ?>
 		<?php echo $form->error($model,'checkPassword'); ?>
-		<?php echo $form->hiddenField($model, 'fld_restriction')?>
+		<?php echo $form->hiddenField($model, 'fld_restrictions')?>
 	</div>
 	
 	<div class="row buttons">
