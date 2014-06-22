@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Departments'=>array('index'),
-	$model->key_dept,
+	'Department Info',
 );
 
 $this->menu=array(
