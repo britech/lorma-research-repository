@@ -51,8 +51,9 @@ class PublicationController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$model=$this->loadModel($id);
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
 		));
 	}
 
@@ -70,6 +71,7 @@ class PublicationController extends Controller
 		if(isset($_POST['Publication']))
 		{
 			$model->attributes=$_POST['Publication'];
+			$model->fld_date_stored=$model->assembleSqlDate($model->fld_date_stored);
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->key_pub));
 		}
