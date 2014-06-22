@@ -13,8 +13,8 @@
  * @property string $fld_designation
  *
  * The followings are the available model relations:
- * @property TblDept $keyDept
- * @property TblPub $keyPub
+ * @property Department $department
+ * @property Publication $publication
  */
 class Author extends CActiveRecord
 {
@@ -51,8 +51,8 @@ class Author extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'keyDept' => array(self::BELONGS_TO, 'TblDept', 'key_dept'),
-			'keyPub' => array(self::BELONGS_TO, 'TblPub', 'key_pub'),
+			'department' => array(self::BELONGS_TO, 'Department', 'key_dept'),
+			'publication' => array(self::BELONGS_TO, 'Publication', 'key_pub'),
 		);
 	}
 
@@ -62,13 +62,13 @@ class Author extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'key_author' => 'Key Author',
-			'fld_lname' => 'Fld Lname',
-			'fld_fname' => 'Fld Fname',
-			'fld_mname' => 'Fld Mname',
-			'key_dept' => 'Key Dept',
-			'key_pub' => 'Key Pub',
-			'fld_designation' => 'Fld Designation',
+			'key_author' => 'Author ID',
+			'fld_lname' => 'Surname',
+			'fld_fname' => 'Given Name',
+			'fld_mname' => 'Middle Name/Initial',
+			'key_dept' => 'Department Assigned',
+			'key_pub' => 'Publication',
+			'fld_designation' => 'Designation',
 		);
 	}
 
