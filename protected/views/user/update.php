@@ -1,21 +1,23 @@
 <?php
 /* @var $this UserController */
 /* @var $model User */
+$title = "Update User Information";
 
+$this->pageTitle = Yii::app()->name.' - '.$title;
 $this->breadcrumbs=array(
 	'Users'=>array('index'),
-	$model->key_user=>array('view','id'=>$model->key_user),
-	'Update',
+	$model->fld_name=>array('view','id'=>$model->key_user),
+	$title,
 );
 
 $this->menu=array(
-	array('label'=>'List User', 'url'=>array('index')),
-	array('label'=>'Create User', 'url'=>array('create')),
-	array('label'=>'View User', 'url'=>array('view', 'id'=>$model->key_user)),
-	array('label'=>'Manage User', 'url'=>array('admin')),
+	array('label'=>'User Directory', 'url'=>array('index')),
+	array('label'=>'Register a User', 'url'=>array('create')),
+	array('label'=>'User Information', 'url'=>array('view', 'id'=>$model->key_user)),
+	array('label'=>'Manage Users', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update User <?php echo $model->key_user; ?></h1>
+<h1><?php echo $title;?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
