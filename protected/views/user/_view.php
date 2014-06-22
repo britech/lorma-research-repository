@@ -5,7 +5,7 @@
 
 <div class="view">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_name')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_name); ?>
+	<?php echo CHtml::link($data->fld_name, array('view', 'id'=>$data->key_user)); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_email_address')); ?>:</b>
