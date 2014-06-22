@@ -63,6 +63,9 @@ class DepartmentController extends Controller
 		if(isset($_POST['Department']))
 		{
 			$model->attributes=$_POST['Department'];
+			$model->fld_code=strtoupper($model->fld_code);
+			$model->fld_name=ucwords(strtolower($model->fld_name));
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->key_dept));
 		}
@@ -85,6 +88,8 @@ class DepartmentController extends Controller
 		if(isset($_POST['Department']))
 		{
 			$model->attributes=$_POST['Department'];
+			$model->fld_code=strtoupper($model->fld_code);
+			$model->fld_name=ucwords(strtolower($model->fld_name));
 			if($model->save())
 				$this->redirect(array('index'));
 		}
