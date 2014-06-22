@@ -1,6 +1,6 @@
 <?php
 
-class PublicationController extends Controller
+class FileController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -51,10 +51,8 @@ class PublicationController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout="profile";
-		$model=$this->loadModel($id);
 		$this->render('view',array(
-			'model'=>$model,
+			'model'=>$this->loadModel($id),
 		));
 	}
 
@@ -64,23 +62,20 @@ class PublicationController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Publication;
+		$model=new File;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Publication']))
+		if(isset($_POST['File']))
 		{
-			$model->attributes=$_POST['Publication'];
-			$model->fld_date_stored=$model->assembleSqlDate($model->fld_date_stored);
+			$model->attributes=$_POST['File'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->key_pub));
+				$this->redirect(array('view','id'=>$model->key_pub_file));
 		}
 
-		$deptList=CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
 		$this->render('create',array(
 			'model'=>$model,
-			'deptList'=>$deptList
 		));
 	}
 
@@ -92,21 +87,19 @@ class PublicationController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-		$oldDate=$model->fld_date_stored;
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Publication']))
+		if(isset($_POST['File']))
 		{
-			$model->attributes=$_POST['Publication'];
-			$model->fld_date_stored=$model->assembleSqlDate(empty($model->fld_date_stored) ? $oldDate : $model->fld_date_stored);
+			$model->attributes=$_POST['File'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->key_pub));
+				$this->redirect(array('view','id'=>$model->key_pub_file));
 		}
-		$deptList=CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
+
 		$this->render('update',array(
 			'model'=>$model,
-			'deptList'=>$deptList
 		));
 	}
 
@@ -129,7 +122,7 @@ class PublicationController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Publication');
+		$dataProvider=new CActiveDataProvider('File');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -140,10 +133,10 @@ class PublicationController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Publication('search');
+		$model=new File('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Publication']))
-			$model->attributes=$_GET['Publication'];
+		if(isset($_GET['File']))
+			$model->attributes=$_GET['File'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -154,12 +147,12 @@ class PublicationController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Publication the loaded model
+	 * @return File the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Publication::model()->findByPk($id);
+		$model=File::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -167,11 +160,11 @@ class PublicationController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Publication $model the model to be validated
+	 * @param File $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='publication-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='file-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
