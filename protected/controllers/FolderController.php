@@ -74,9 +74,7 @@ class FolderController extends Controller
 				$this->redirect(array('view','id'=>$model->key_folder_group));
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+		$this->redirect(array('index'));
 	}
 
 	/**
@@ -98,8 +96,9 @@ class FolderController extends Controller
 				$this->redirect(array('view','id'=>$model->key_folder_group));
 		}
 
-		$this->render('update',array(
+		$this->render('manage',array(
 			'model'=>$model,
+			'gridModel'=>new Folder()
 		));
 	}
 
@@ -114,7 +113,7 @@ class FolderController extends Controller
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}
 
 	/**
@@ -122,9 +121,14 @@ class FolderController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Folder');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+		$model=new Folder('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Folder']))
+			$model->attributes=$_GET['Folder'];
+		
+		$this->render('manage',array(
+			'model'=>new Folder(),
+			'gridModel'=>$model
 		));
 	}
 
