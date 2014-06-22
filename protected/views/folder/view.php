@@ -1,7 +1,7 @@
 <?php
 /* @var $this FolderController */
 /* @var $model Folder */
-
+$this->pageTitle=Yii::app()->name.' - Folder Group';
 $this->breadcrumbs=array(
 	'Publications'=>array('publication/index'),
 	'Folders'=>array('index'),
