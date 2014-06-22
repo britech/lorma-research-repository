@@ -45,7 +45,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fld_password'); ?>
-		<?php echo $form->textField($model,'fld_password',array('size'=>50,'maxlength'=>50)); ?>
+		<?php echo $form->passwordField($model,'fld_password',array('size'=>50,'maxlength'=>50)); ?>
 		<?php echo $form->error($model,'fld_password'); ?>
 	</div>
 
