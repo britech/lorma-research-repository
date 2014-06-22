@@ -32,9 +32,9 @@ class Publication extends CActiveRecord
 	}
 	public function getVisibilityDescription($visibility){
 		if($visibility > -1 && $visibility < 2){
-			return "Unknown";
-		} else{
 			return $this->getVisibilityList()[$visibility];
+		} else{
+			return "Unknown";
 		}
 	}
 	
