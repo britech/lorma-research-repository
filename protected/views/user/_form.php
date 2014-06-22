@@ -72,7 +72,7 @@
 	<?php endif;?>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo $model->isNewRecord ? CHtml::submitButton('Create', array('class'=>'button green')) : CHtml::submitButton('Save', array('class'=>'button blue')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
