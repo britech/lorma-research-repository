@@ -74,8 +74,10 @@ class PublicationController extends Controller
 				$this->redirect(array('view','id'=>$model->key_pub));
 		}
 
+		$deptList=CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
 		$this->render('create',array(
 			'model'=>$model,
+			'deptList'=>$deptList
 		));
 	}
 
