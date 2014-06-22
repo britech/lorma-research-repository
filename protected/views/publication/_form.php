@@ -61,7 +61,8 @@
 				'options'=>array(
 					'showAnim'=>'blind',
 					'changeMonth'=>true,
-					'changeYear'=>true
+					'changeYear'=>true,
+					'yearRange'=>(1973-date('Y')).":+".(2100-date('Y'))
 				),
 				'htmlOptions'=>array(
 					'class'=>'shadowdatepicker'
