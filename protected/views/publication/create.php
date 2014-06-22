@@ -4,15 +4,15 @@
 
 $this->breadcrumbs=array(
 	'Publications'=>array('index'),
-	'Create',
+	'Upload a Publication',
 );
 
 $this->menu=array(
-	array('label'=>'List Publication', 'url'=>array('index')),
-	array('label'=>'Manage Publication', 'url'=>array('admin')),
+	array('label'=>'Publication Directory', 'url'=>array('index')),
+	array('label'=>'Search a Publication', 'url'=>array('search')),
 );
 ?>
 
-<h1>Create Publication</h1>
+<h1>Upload a Publication</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model, 'deptList'=>$deptList)); ?>
