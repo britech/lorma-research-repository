@@ -7,8 +7,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create Publication', 'url'=>array('create')),
-	array('label'=>'Manage Publication', 'url'=>array('admin')),
+	array('label'=>'Upload a Publication', 'url'=>array('create')),
+	array('label'=>'Manage Folder Groups', 'url'=>array('folder/index')),
 );
 ?>
 
