@@ -142,14 +142,14 @@ class Publication extends CActiveRecord
 		return parent::model($className);
 	}
 	
-	public function assembleSqlDate(){
-		$date = explode('/',$this->fld_date_stored);
-		$sqlDate = $date[2]."-".$date[1]."-".$date[0];
-		$this->fld_date_stored=$sqlDate;
+	public function assembleSqlDate($date){
+		$formatDate = explode('/',$date);
+		$sqlDate = $formatDate[2]."-".$formatDate[1]."-".$formatDate[0];
+		return $sqlDate;
 	}
 	
-	public function assembleHumanReadableDate(){
-		$date = date_create($this->fld_date_stored);
-		$this->fld_date_stored = date_format($date, 'F d, Y');
+	public function assembleHumanReadableDate($date){
+		$formatDate = date_create($date);
+		return date_format($formatDate, 'F d, Y');
 	}
 }
