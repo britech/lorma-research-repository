@@ -51,7 +51,17 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fld_date_stored'); ?>
-		<?php echo $form->textField($model,'fld_date_stored'); ?>
+		<?php /* echo $form->textField($model,'fld_date_stored'); */ 
+		$this->widget('zii.widgets.jui.CJuiDatePicker', array(
+				'name'=>'fld_date_stored',
+				'options'=>array(
+					'showAnim'=>'blind',
+				),
+				'htmlOptions'=>array(
+					'class'=>'shadowdatepicker'
+				),
+		));
+		?>
 		<?php echo $form->error($model,'fld_date_stored'); ?>
 	</div>
 
