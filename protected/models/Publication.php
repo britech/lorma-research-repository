@@ -55,6 +55,7 @@ class Publication extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fld_pub_title, fld_txt_page, fld_no_page, key_dept, fld_date_stored', 'required'),
+			array('fld_pub_title, fld_txt_page, fld_no_page, key_dept', 'required', 'on'=>'update'),
 			array('fld_txt_page, fld_no_page, key_dept, fld_is_visible', 'numerical', 'integerOnly'=>true),
 			array('fld_format_type', 'length', 'max'=>50),
 			// The following rule is used by search().
