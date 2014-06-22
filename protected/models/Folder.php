@@ -55,9 +55,9 @@ class Folder extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'key_folder_group' => 'Key Folder Group',
-			'fld_group_name' => 'Fld Group Name',
-			'fld_description' => 'Fld Description',
+			'key_folder_group' => 'Folder ID',
+			'fld_group_name' => 'Folder Group Name',
+			'fld_description' => 'Description',
 		);
 	}
 
