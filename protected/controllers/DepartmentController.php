@@ -74,9 +74,7 @@ class DepartmentController extends Controller
 				$this->redirect(array('view','id'=>$model->key_dept));
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+		$this->redirect(array('index'));
 	}
 
 	/**
@@ -98,8 +96,9 @@ class DepartmentController extends Controller
 				$this->redirect(array('view','id'=>$model->key_dept));
 		}
 
-		$this->render('update',array(
+		$this->render('manage',array(
 			'model'=>$model,
+			'gridModel'=>new Department()
 		));
 	}
 
@@ -123,14 +122,16 @@ class DepartmentController extends Controller
 	public function actionIndex()
 	{
 		$dataProvider=new CActiveDataProvider('Department');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+		$this->layout="column1";
+		$this->render('manage',array(
+			'gridModel'=>new Department(),
+			'model'=>new Department()
 		));
 	}
 
-	/**
+	/*
 	 * Manages all models.
-	 */
+	 *
 	public function actionAdmin()
 	{
 		$model=new Department('search');
@@ -141,7 +142,7 @@ class DepartmentController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
-	}
+	} */
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
