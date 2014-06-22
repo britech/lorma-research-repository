@@ -61,7 +61,7 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('firstName, lastName, midName, fld_username, fld_password, fld_email_address', 'required'),
+			array('firstName, lastName, midName, fld_username, fld_name, fld_password, fld_email_address', 'required'),
 			array('fld_email_address', 'email'),
 			array('firstName, lastName, midName, fld_username, fld_password, checkPassword, fld_email_address', 'required', 'on'=>'register'),
 			array('fld_username', 'unique'),
@@ -94,6 +94,7 @@ class User extends CActiveRecord
 	public $lastName="";
 	public $midName="";
 	public $checkPassword="";
+	public $oldPassword="";
 	
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -119,7 +120,29 @@ class User extends CActiveRecord
 	public function assembleName(){
 		return strtoupper($this->firstName." ".substr($this->midName, 0, 1).". ".$this->lastName);
 	}
+	
+	public function disassembleName(){
+		$nameField = explode(" ",$this->fld_name);
+		
+		$startPointer = 0;
+		foreach($nameField as $name){
+			$startPointer++;
+			if(preg_match("/[A-z]\./i", $name)){
+				$this->midName = substr($name, 0, (strlen($name)-1));
+				break;
+			} else{
+				$this->firstName.=$name.' ';
+			}
+		}
 
+		for($i=$startPointer; $i<count($nameField); $i++){
+			$this->lastName.=$nameField[$i].' ';
+		}
+		
+		$this->firstName = ucwords(strtolower($this->firstName));
+		$this->lastName = ucwords(strtolower($this->lastName));
+	}
+	
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *
