@@ -90,14 +90,18 @@ class UserController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+		$model->disassembleName();
+		$model->oldPassword=$model->fld_password;
+		$model->fld_password="";
+		
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
+			$model->fld_password = empty($model->fld_password) ? $model->oldPassword : $model->fld_password;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->key_user));
 		}
-
+		
 		$this->render('update',array(
 			'model'=>$model,
 		));
