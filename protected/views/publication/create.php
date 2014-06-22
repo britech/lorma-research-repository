@@ -1,7 +1,7 @@
 <?php
 /* @var $this PublicationController */
 /* @var $model Publication */
-
+$this->pageTitle=Yii::app()->name.' - Publication';
 $this->breadcrumbs=array(
 	'Publications'=>array('index'),
 	'Upload a Publication',
