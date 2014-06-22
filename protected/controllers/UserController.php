@@ -36,7 +36,7 @@ class UserController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','updateStatus'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -145,6 +145,11 @@ class UserController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+	}
+	
+	public function actionUpdateStatus($id, $stat){
+		Yii::app()->db->createCommand()->update('tbl_user', array('fld_user_stat'=>$stat), 'key_user=:id', array('id'=>$id));
+		$this->redirect(!isset(Yii::app()->request->urlReferrer) ? array('view', 'id'=>$id) : Yii::app()->request->urlReferrer);
 	}
 
 	/**
