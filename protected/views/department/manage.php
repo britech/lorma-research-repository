@@ -10,13 +10,10 @@ if($model->isNewRecord){
 } else{
 	$this->breadcrumbs=array(
 			'Departments'=>array('index'),
-			$model->fld_name=>array('view', 'id'=>$model->key_dept),
+			'Department Info'=>array('view', 'id'=>$model->key_dept),
 			'Update Department Info'
 	);
 }
-
-
-
 if(!empty($model->key_dept)){
 	$this->menu=array(
 			array('label'=>'Enlist a Department', 'url'=>array('index')),
