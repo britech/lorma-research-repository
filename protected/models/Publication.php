@@ -79,7 +79,7 @@ class Publication extends CActiveRecord
 			'notes' => array(self::HAS_MANY, 'Note', 'key_pub'),
 		);
 	}
-
+	
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
