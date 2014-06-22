@@ -9,7 +9,7 @@
  * @property string $fld_description
  *
  * The followings are the available model relations:
- * @property TblPubFile[] $tblPubFiles
+ * @property File[] $files
  */
 class Folder extends CActiveRecord
 {
@@ -45,7 +45,7 @@ class Folder extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblPubFiles' => array(self::HAS_MANY, 'TblPubFile', 'key_folder_group'),
+			'files' => array(self::HAS_MANY, 'File', 'key_folder_group'),
 		);
 	}
 
