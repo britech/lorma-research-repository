@@ -100,4 +100,8 @@ class Department extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	public function getDepartmentLabel(){
+		return $this->fld_code.' - '.$this->fld_name;
+	}
 }
