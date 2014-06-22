@@ -24,6 +24,20 @@
  */
 class Publication extends CActiveRecord
 {
+	const VISIBILITY_SHOW=1;
+	const VISIBILITY_HIDE=0;
+	public function getVisibilityList(){
+		return array(self::VISIBILITY_SHOW=>'Shown to All',
+					 self::VISIBILITY_HIDE=>'Limited Access');
+	}
+	public function getVisibilityDescription($visibility){
+		if($visibility > -1 && $visibility < 2){
+			return "Unknown";
+		} else{
+			return $this->getVisibilityList()[$visibility];
+		}
+	}
+	
 	/**
 	 * @return string the associated database table name
 	 */
