@@ -38,7 +38,11 @@ class User extends CActiveRecord
 					 self::STATUS_BLOCKED=>'Blocked Access');
 	}
 	public function getStatusDescription($status){
-		return is_null($this->getStatusList()[$status]) ? "Unknown" : $this->getStatusList()[$status];
+		if($status > -2 && $status < 2){
+			return $this->getStatusList()[$status];
+		} else{
+			return "Unknown";	
+		}
 	}
 	
 	/**
