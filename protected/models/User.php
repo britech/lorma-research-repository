@@ -18,6 +18,17 @@
  */
 class User extends CActiveRecord
 {
+	
+	const RESTRICTION_ADMINISTRATOR = "ADMIN";
+	const RESTRICTION_REGULAR = "BASIC";
+	public function getRestrictionList(){
+		return array(self::RESTRICTION_ADMINISTRATOR=>'Administrative',
+					 self::RESTRICTION_REGULAR=>'Basic');
+	}
+	public function getRestrictionDescription($restriction){
+		return $this->getRestrictionList()[$restriction];
+	}
+	
 	/**
 	 * @return string the associated database table name
 	 */
