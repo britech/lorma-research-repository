@@ -8,11 +8,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List User', 'url'=>array('index')),
-	array('label'=>'Create User', 'url'=>array('create')),
+	array('label'=>'User Directory', 'url'=>array('index')),
+	array('label'=>'Register a User', 'url'=>array('create')),
 );
 
-Yii::app()->clientScript->registerScript('search', "
+/* Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
 	return false;
@@ -23,30 +23,29 @@ $('.search-form form').submit(function(){
 	});
 	return false;
 });
-");
+"); */
 ?>
 
 <h1>Manage Users</h1>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
-
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
+<?php //echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+<!--<div class="search-form" style="display:none">-->
+<?php /* $this->renderPartial('_search',array(
 	'model'=>$model,
-)); ?>
-</div><!-- search-form -->
-
+)); */ ?>
+<!-- </div> -->
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'user-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
 		/* 'key_user', */
-		'fld_name',
+		array(
+			'name'=>'fld_name',
+			'type'=>'raw',
+			'value'=>'CHtml::link($data->fld_name, array("view", "id"=>$data->key_user))',
+			'htmlOptions'=>array('style'=>'width: 80%')
+		),
 		/* 'fld_username',
 		'fld_password',
 		'fld_email_address',
@@ -55,7 +54,11 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'fld_user_stat',
 		*/
 		array(
-			'class'=>'CButtonColumn',
+			'name'=>'fld_user_stat',
+			'header'=>'Action',
+			'type'=>'raw',
+			'value'=>'$data->fld_user_stat==0 ? CHtml::link("Activate Account", array("updateStatus", "id"=>$data->key_user, "stat"=>"1")) : ($data->fld_user_stat==1 ? CHtml::link("Deactivate Account", array("updateStatus", "id"=>$data->key_user, "stat"=>1)) : CHtml::link("Delete Account", array("delete", "id"=>$data->key_user)));',
+			'htmlOptions'=>array('style'=>'text-align:center;')
 		),
 	),
 )); ?>
