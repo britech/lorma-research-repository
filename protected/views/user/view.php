@@ -23,7 +23,7 @@ switch($model->fld_user_stat){
 		break;
 		
 	default:
-		$additionalLinks=array(array('label'=>'Deactivate Account', 'url'=>array('updateStatus', 'id'=>$model->key_user, 'stat'=>1)),
+		$additionalLinks=array(array('label'=>'Deactivate Account', 'url'=>array('updateStatus', 'id'=>$model->key_user, 'stat'=>0)),
 							   array('label'=>'Delete User', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->key_user),'confirm'=>'Are you sure you want to delete this item?')));
 		
 }
