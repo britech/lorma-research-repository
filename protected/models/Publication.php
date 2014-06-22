@@ -15,12 +15,12 @@
  * @property integer $fld_is_visible
  *
  * The followings are the available model relations:
- * @property TblLibrary[] $tblLibraries
- * @property TblDept $keyDept
- * @property TblPubAuthor[] $tblPubAuthors
- * @property TblPubFile[] $tblPubFiles
- * @property TblPubKeyword[] $tblPubKeywords
- * @property TblPubNote[] $tblPubNotes
+ * @property TaggedPublication[] $taggedPublications
+ * @property Department $department
+ * @property Author[] $authors
+ * @property File[] $files
+ * @property Keyword[] $keywords
+ * @property Note[] $notes
  */
 class Publication extends CActiveRecord
 {
@@ -57,12 +57,12 @@ class Publication extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'tblLibraries' => array(self::HAS_MANY, 'TblLibrary', 'key_pub'),
-			'keyDept' => array(self::BELONGS_TO, 'TblDept', 'key_dept'),
-			'tblPubAuthors' => array(self::HAS_MANY, 'TblPubAuthor', 'key_pub'),
-			'tblPubFiles' => array(self::HAS_MANY, 'TblPubFile', 'key_pub'),
-			'tblPubKeywords' => array(self::HAS_MANY, 'TblPubKeyword', 'key_pub'),
-			'tblPubNotes' => array(self::HAS_MANY, 'TblPubNote', 'key_pub'),
+			'taggedPublication' => array(self::HAS_MANY, 'TaggedPublication', 'key_pub'),
+			'department' => array(self::BELONGS_TO, 'Department', 'key_dept'),
+			'authors' => array(self::HAS_MANY, 'Author', 'key_pub'),
+			'files' => array(self::HAS_MANY, 'File', 'key_pub'),
+			'keywords' => array(self::HAS_MANY, 'Keyword', 'key_pub'),
+			'notes' => array(self::HAS_MANY, 'Note', 'key_pub'),
 		);
 	}
 
@@ -72,15 +72,15 @@ class Publication extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'key_pub' => 'Key Pub',
-			'fld_pub_title' => 'Fld Pub Title',
-			'fld_txt_page' => 'Fld Txt Page',
-			'fld_no_page' => 'Fld No Page',
-			'fld_location' => 'Fld Location',
-			'key_dept' => 'Key Dept',
-			'fld_date_stored' => 'Fld Date Stored',
-			'fld_format_type' => 'Fld Format Type',
-			'fld_is_visible' => 'Fld Is Visible',
+			'key_pub' => 'Publication ID',
+			'fld_pub_title' => 'Title',
+			'fld_txt_page' => 'Text Number of Pages',
+			'fld_no_page' => 'Total Number of Pages',
+			'fld_location' => 'Repository Location',
+			'key_dept' => 'Department of Origin',
+			'fld_date_stored' => 'Date Received to Research Office',
+			'fld_format_type' => 'Type of Format Utilized',
+			'fld_is_visible' => 'Visibility',
 		);
 	}
 
