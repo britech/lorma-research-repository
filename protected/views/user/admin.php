@@ -57,7 +57,7 @@ $('.search-form form').submit(function(){
 			'name'=>'fld_user_stat',
 			'header'=>'Action',
 			'type'=>'raw',
-			'value'=>'$data->fld_user_stat==0 ? CHtml::link("Activate Account", array("updateStatus", "id"=>$data->key_user, "stat"=>"1")) : ($data->fld_user_stat==1 ? CHtml::link("Deactivate Account", array("updateStatus", "id"=>$data->key_user, "stat"=>1)) : CHtml::link("Delete Account", array("delete", "id"=>$data->key_user)));',
+			'value'=>'$data->fld_user_stat==0 ? CHtml::link("Activate Account", array("updateStatus", "id"=>$data->key_user, "stat"=>"1")) : ($data->fld_user_stat==1 ? CHtml::link("Deactivate Account", array("updateStatus", "id"=>$data->key_user, "stat"=>0)) : CHtml::link("Delete Account", array("delete", "id"=>$data->key_user)));',
 			'htmlOptions'=>array('style'=>'text-align:center;')
 		),
 	),
