@@ -27,7 +27,7 @@ if(!empty($model->key_dept)){
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'department-form',
-	'action'=>array('department/create'),
+	'action'=>$model->isNewRecord ? array('department/create') : array('department/update', 'id'=>$model->key_dept),
 	'enableClientValidation'=>true,
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
@@ -63,15 +63,31 @@ if(!empty($model->key_dept)){
 <?php $this->endWidget(); ?>
 </div>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'department-grid',
-	'dataProvider'=>$gridModel->search(),
-	'filter'=>$gridModel,
-	'columns'=>array(
-		'fld_code',
-		'fld_name',
-		array(
-			'class'=>'CButtonColumn',
+<?php 
+if(!$model->isNewRecord){
+	$this->widget('zii.widgets.grid.CGridView', array(
+		'id'=>'department-grid',
+		'dataProvider'=>$gridModel->search(),
+		'columns'=>array(
+				'fld_code',
+				'fld_name',
+				array(
+						'class'=>'CButtonColumn',
+				),
 		),
-	),
-)); ?>
+	));
+} else{
+	$this->widget('zii.widgets.grid.CGridView', array(
+		'id'=>'department-grid',
+		'dataProvider'=>$gridModel->search(),
+		'filter'=>$gridModel,
+		'columns'=>array(
+				'fld_code',
+				'fld_name',
+				array(
+						'class'=>'CButtonColumn',
+				),
+		),
+	));
+}
+?>
