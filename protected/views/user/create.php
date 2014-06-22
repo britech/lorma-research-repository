@@ -1,10 +1,11 @@
 <?php
 /* @var $this UserController */
 /* @var $model User */
+$this->pageTitle = Yii::app()->name.' - Register a User';
 
 $this->breadcrumbs=array(
 	'Users'=>array('index'),
-	'Create',
+	'Register a User',
 );
 
 $this->menu=array(
@@ -13,6 +14,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create User</h1>
+<h1>Register a User</h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

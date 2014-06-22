@@ -20,11 +20,23 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'fld_name'); ?>
-		<?php echo $form->textArea($model,'fld_name',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'fld_name'); ?>
+		<?php echo $form->labelEx($model, 'firstName'); ?>
+		<?php echo $form->textField($model,'firstName',array('size'=>50)); ?>
+		<?php echo $form->error($model,'firstName'); ?>
 	</div>
-
+	
+	<div class="row">
+		<?php echo $form->labelEx($model, 'midName'); ?>
+		<?php echo $form->textField($model,'midName',array('size'=>50)); ?>
+		<?php echo $form->error($model,'midName'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model, 'lastName'); ?>
+		<?php echo $form->textField($model,'lastName',array('size'=>50)); ?>
+		<?php echo $form->error($model,'lastName'); ?>
+	</div>
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fld_username'); ?>
 		<?php echo $form->textField($model,'fld_username',array('size'=>50,'maxlength'=>50)); ?>
@@ -39,21 +51,25 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fld_email_address'); ?>
-		<?php echo $form->textArea($model,'fld_email_address',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->textField($model,'fld_email_address',array('size'=>100)); ?>
 		<?php echo $form->error($model,'fld_email_address'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fld_restrictions'); ?>
-		<?php echo $form->textField($model,'fld_restrictions',array('size'=>50,'maxlength'=>50)); ?>
+		<?php echo $form->dropDownList($model,'fld_restrictions', $model->getRestrictionList()); ?>
 		<?php echo $form->error($model,'fld_restrictions'); ?>
 	</div>
-
+	
+	<?php if($model->isNewRecord):?>
+		<?php echo $form->hiddenField($model, 'fld_user_stat');?>
+	<?php else:?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'fld_user_stat'); ?>
-		<?php echo $form->textField($model,'fld_user_stat'); ?>
+		<?php echo $form->dropDownList($model,'fld_user_stat',$model->getStatusList()); ?>
 		<?php echo $form->error($model,'fld_user_stat'); ?>
 	</div>
+	<?php endif;?>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
