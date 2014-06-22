@@ -93,12 +93,12 @@ class DepartmentController extends Controller
 		{
 			$model->attributes=$_POST['Department'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->key_dept));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('manage',array(
 			'model'=>$model,
-			'gridModel'=>new Department()
+			'gridModel'=>new Department('search')
 		));
 	}
 
@@ -121,10 +121,14 @@ class DepartmentController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Department');
+		$model=new Department('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Department']))
+			$model->attributes=$_GET['Department'];
+		
 		$this->layout="column1";
 		$this->render('manage',array(
-			'gridModel'=>new Department(),
+			'gridModel'=>$model,
 			'model'=>new Department()
 		));
 	}
