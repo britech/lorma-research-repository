@@ -7,7 +7,11 @@
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'publication-form',
+	'id'=>'publication-initial-form',
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
@@ -53,9 +57,11 @@
 		<?php echo $form->labelEx($model,'fld_date_stored'); ?>
 		<?php /* echo $form->textField($model,'fld_date_stored'); */ 
 		$this->widget('zii.widgets.jui.CJuiDatePicker', array(
-				'name'=>'fld_date_stored',
+				'name'=>'Publication[fld_date_stored]',
 				'options'=>array(
 					'showAnim'=>'blind',
+					'changeMonth'=>true,
+					'changeYear'=>true
 				),
 				'htmlOptions'=>array(
 					'class'=>'shadowdatepicker'
