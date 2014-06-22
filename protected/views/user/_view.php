@@ -13,7 +13,7 @@
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_restrictions')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_restrictions); ?>
+	<?php echo is_null($data->fld_restrictions) ? "Not Set" : $data->getRestrictionDescription($data->fld_restrictions); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_user_stat')); ?>:</b>
