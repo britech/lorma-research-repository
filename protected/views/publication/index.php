@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'Upload a Publication', 'url'=>array('create')),
 	array('label'=>'Manage Folder Groups', 'url'=>array('folder/index')),
+	array('label'=>'Search a Publication', 'url'=>array('search')),
 );
 ?>
 
