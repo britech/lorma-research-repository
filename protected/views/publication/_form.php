@@ -37,15 +37,15 @@
 		<?php echo $form->error($model,'fld_no_page'); ?>
 	</div>
 
-	<div class="row">
+	<!--<div class="row">
 		<?php echo $form->labelEx($model,'fld_location'); ?>
 		<?php echo $form->textArea($model,'fld_location',array('rows'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'fld_location'); ?>
-	</div>
+	</div>-->
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'key_dept'); ?>
-		<?php echo $form->textField($model,'key_dept'); ?>
+		<?php echo $form->dropDownList($model,'key_dept',$deptList); ?>
 		<?php echo $form->error($model,'key_dept'); ?>
 	</div>
 
@@ -55,15 +55,15 @@
 		<?php echo $form->error($model,'fld_date_stored'); ?>
 	</div>
 
-	<div class="row">
+	<!--<div class="row">
 		<?php echo $form->labelEx($model,'fld_format_type'); ?>
 		<?php echo $form->textField($model,'fld_format_type',array('size'=>50,'maxlength'=>50)); ?>
 		<?php echo $form->error($model,'fld_format_type'); ?>
-	</div>
+	</div>-->
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fld_is_visible'); ?>
-		<?php echo $form->textField($model,'fld_is_visible'); ?>
+		<?php echo $form->dropDownList($model,'fld_is_visible',$model->getVisibilityList()); ?>
 		<?php echo $form->error($model,'fld_is_visible'); ?>
 	</div>
 
