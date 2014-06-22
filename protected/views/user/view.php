@@ -18,7 +18,7 @@ switch($model->fld_user_stat){
 	
 	case 1:
 		$additionalLinks=array(array('label'=>'Update User Information', 'url'=>array('update', 'id'=>$model->key_user)),
-							   array('label'=>'Deactivate Account', 'url'=>array('updateStatus', 'id'=>$model->key_user, 'stat'=>1)),
+							   array('label'=>'Deactivate Account', 'url'=>array('updateStatus', 'id'=>$model->key_user, 'stat'=>0)),
 							   array('label'=>'Block Account', 'url'=>array('updateStatus', 'id'=>$model->key_user, 'stat'=>-1)));
 		break;
 		
