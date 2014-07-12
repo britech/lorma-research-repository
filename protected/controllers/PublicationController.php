@@ -36,7 +36,7 @@ class PublicationController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','author','enlistAuthor'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -176,5 +176,45 @@ class PublicationController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	
+	
+	public function actionAuthor($publication){
+		$model=$this->loadModel($publication);
+		$deptList=CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
+		
+		$formModel=new Author();
+		$formModel->key_dept=$model->key_dept;
+		$formModel->key_pub=$publication;
+
+		$gridModel=new Author('searchByPublication');
+		$gridModel->unsetAttributes();  // clear any default values
+		if(isset($_GET['Author']))
+			$gridModel->attributes=$_GET['Author'];
+		
+		$this->layout="profile";
+		$this->render('manageAuthor', array(
+				'model'=>$formModel,
+				'deptList'=>$deptList,
+				'gridModel'=>$gridModel
+		));
+	}
+	
+	public function actionEnlistAuthor($publication){
+		$model=new Author;
+		if(isset($_POST['Author'])){
+			$model->attributes=$_POST['Author'];
+			$model->fld_lname=ucwords(strtolower($model->fld_lname));
+			$model->fld_fname=ucwords(strtolower($model->fld_fname));
+			$model->fld_mname=ucwords(strtolower($model->fld_mname));
+			
+			Yii::app()->db->createCommand()->insert($model->tableName(), 
+													array('fld_lname'=>$model->fld_lname,
+														  'fld_fname'=>$model->fld_fname,
+														  'fld_mname'=>$model->fld_mname,
+														  'key_pub'=>$model->key_pub,
+														  'key_dept'=>$model->key_dept));
+		}
+		$this->redirect(array('author', 'publication'=>$publication));
 	}
 }

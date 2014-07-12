@@ -40,6 +40,7 @@ class Author extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('key_author, fld_lname, fld_fname, fld_mname, key_dept, key_pub, fld_designation', 'safe', 'on'=>'search'),
+			array('key_author, fld_lname, fld_fname, fld_mname, key_dept, key_pub, fld_designation', 'safe', 'on'=>'searchByPublication'),
 		);
 	}
 
@@ -97,9 +98,32 @@ class Author extends CActiveRecord
 		$criteria->compare('key_dept',$this->key_dept);
 		$criteria->compare('key_pub',$this->key_pub);
 		$criteria->compare('fld_designation',$this->fld_designation,true);
+		$criteria->with=array('department');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+		));
+	}
+	
+	public function searchByPublication($publication)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+	
+		$criteria=new CDbCriteria;
+	
+		$criteria->compare('key_author',$this->key_author);
+		$criteria->compare('fld_lname',$this->fld_lname,true);
+		$criteria->compare('fld_fname',$this->fld_fname,true);
+		$criteria->compare('fld_mname',$this->fld_mname,true);
+		$criteria->compare('key_dept',$this->key_dept);
+		$criteria->compare('fld_designation',$this->fld_designation,true);
+		$criteria->with=array('department');
+		$criteria->condition="key_pub=:id";
+		$criteria->params=array(':id'=>$publication);
+		$criteria->order='fld_lname ASC';
+	
+		return new CActiveDataProvider($this, array(
+				'criteria'=>$criteria,
 		));
 	}
 
