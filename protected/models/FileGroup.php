@@ -57,9 +57,9 @@ class FileGroup extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'key_pub_folder' => 'Key Pub Folder',
-			'key_pub' => 'Key Pub',
-			'key_folder' => 'Key Folder',
+			'key_pub_folder' => 'FileGroup ID',
+			'key_pub' => 'Publication',
+			'key_folder' => 'Folder',
 		);
 	}
 
