@@ -8,7 +8,7 @@
  * @property string $fld_lname
  * @property string $fld_fname
  * @property string $fld_mname
- * @property integer $key_dept
+ * @property integer $dept_ref
  * @property integer $key_pub
  * @property string $fld_designation
  *
@@ -39,8 +39,7 @@ class Author extends CActiveRecord
 			array('fld_lname, fld_fname, fld_mname', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('key_author, fld_lname, fld_fname, fld_mname, key_dept, key_pub, fld_designation', 'safe', 'on'=>'search'),
-			array('key_author, fld_lname, fld_fname, fld_mname, key_dept, key_pub, fld_designation', 'safe', 'on'=>'searchByPublication'),
+			array('fld_lname, fld_fname, fld_mname, key_dept', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -85,48 +84,27 @@ class Author extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
-	{
+	public function search(){
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('key_author',$this->key_author);
-		$criteria->compare('fld_lname',$this->fld_lname,true);
 		$criteria->compare('fld_fname',$this->fld_fname,true);
+		$criteria->compare('fld_lname',$this->fld_lname,true);
 		$criteria->compare('fld_mname',$this->fld_mname,true);
 		$criteria->compare('key_dept',$this->key_dept);
-		$criteria->compare('key_pub',$this->key_pub);
-		$criteria->compare('fld_designation',$this->fld_designation,true);
+		//$criteria->compare('key_pub', $this->key_pub);
+		//$criteria->compare('fld_designation',$this->fld_designation,true);
 		$criteria->with=array('department');
+		/* $criteria->join='JOIN tbl_pub ON tbl_pub.key_pub=tbl_pub_author.key_pub'; */
+ 		$criteria->condition="key_pub=:id";
+		$criteria->params=array(':id'=>$this->key_pub);
+		$criteria->order='fld_lname ASC, department.fld_name ASC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-	
-	public function searchByPublication($publication)
-	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
-	
-		$criteria=new CDbCriteria;
-	
-		$criteria->compare('key_author',$this->key_author);
-		$criteria->compare('fld_lname',$this->fld_lname,true);
-		$criteria->compare('fld_fname',$this->fld_fname,true);
-		$criteria->compare('fld_mname',$this->fld_mname,true);
-		$criteria->compare('key_dept',$this->key_dept);
-		$criteria->compare('fld_designation',$this->fld_designation,true);
-		$criteria->with=array('department');
-		$criteria->condition="key_pub=:id";
-		$criteria->params=array(':id'=>$publication);
-		$criteria->order='fld_lname ASC';
-	
-		return new CActiveDataProvider($this, array(
-				'criteria'=>$criteria,
-		));
-	}
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
