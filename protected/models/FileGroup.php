@@ -6,7 +6,7 @@
  * The followings are the available columns in table 'tbl_pub_folder':
  * @property integer $key_pub_folder
  * @property integer $key_pub
- * @property integer $key_folder
+ * @property integer $key_folder_group
  *
  * The followings are the available model relations:
  * @property Publication $publication
@@ -30,11 +30,11 @@ class FileGroup extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('key_pub, key_folder', 'required'),
-			array('key_pub, key_folder', 'numerical', 'integerOnly'=>true, 'min'=>1, 'max'=>10),
+			array('key_pub, key_folder_group', 'required'),
+			array('key_pub, key_folder_group', 'numerical', 'integerOnly'=>true, 'min'=>1, 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('key_pub_folder, key_pub, key_folder', 'safe', 'on'=>'search'),
+			array('key_pub_folder, key_pub, key_folder_group', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,7 +47,7 @@ class FileGroup extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'publication' => array(self::BELONGS_TO, 'Publication', 'key_pub'),
-			'folder' => array(self::BELONGS_TO, 'Folder', 'key_folder'),
+			'folder' => array(self::BELONGS_TO, 'Folder', 'key_folder_group'),
 		);
 	}
 
@@ -75,15 +75,19 @@ class FileGroup extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($publication)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('key_pub_folder',$this->key_pub_folder);
-		$criteria->compare('key_pub',$this->key_pub);
-		$criteria->compare('key_folder',$this->key_folder);
+		//$criteria->compare('key_pub_folder',$this->key_pub_folder);
+		//$criteria->compare('key_pub',$this->key_pub);
+		//$criteria->compare('key_folder',$this->key_folder);
+		$criteria->with=array('folder');
+		$criteria->condition="key_pub=:id";
+		$criteria->params=array(':id'=>$publication);
+		$criteria->order='folder.fld_order ASC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

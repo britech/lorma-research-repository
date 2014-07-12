@@ -8,7 +8,8 @@ $this->breadcrumbs=array(
 
 $this->profileLink=array(
 		array('label'=>'Authors', 'url'=>array('publication/author', 'publication'=>$model->key_pub)),
-		array('label'=>'Files', 'url'=>array('file/index')),
+		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$model->key_pub)),
+		array('label'=>'Files', 'url'=>array('files/index')),
 		array('label'=>'Keywords', 'url'=>array('keyword/index')),
 );
 

@@ -36,7 +36,7 @@ class PublicationController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','author','enlistAuthor'),
+				'actions'=>array('admin','delete','author','enlistAuthor','folder','assignFolder'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -199,7 +199,6 @@ class PublicationController extends Controller
 		$this->render('manageAuthor', array(
 				'model'=>$formModel,
 				'deptList'=>$deptList,
-				'deptFilterList'=>$deptFilterList,
 				'gridModel'=>$gridModel
 		));
 	}
@@ -220,5 +219,32 @@ class PublicationController extends Controller
 														  'key_dept'=>$model->key_dept));
 		}
 		$this->redirect(array('author', 'publication'=>$publication));
+	}
+	
+	public function actionFolder($publication){
+		$model=$this->loadModel($publication);
+		
+		$formModel=new FileGroup();
+		$formModel->key_pub=$model->key_pub;
+		
+		$folderList=CHtml::listData(Folder::model()->findAllByAttributes(array(),'key_folder_group NOT IN(SELECT key_folder_group FROM tbl_pub_folder WHERE key_pub=:pub)', array(':pub'=>$publication)),
+									'key_folder_group',
+									'fld_group_name');
+		
+		$this->layout="profile";
+		$this->render('manageFolder', array(
+				'model'=>$formModel,
+				'folderList'=>$folderList,
+				'gridModel'=>new FileGroup()
+		));
+	}
+	
+	public function actionAssignFolder($publication){
+		$model=new FileGroup();
+		if(isset($_POST['FileGroup'])){
+			$model->attributes=$_POST['FileGroup'];
+			$model->save();
+		}
+		$this->redirect(array('folder','publication'=>$publication));
 	}
 }
