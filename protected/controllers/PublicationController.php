@@ -73,6 +73,7 @@ class PublicationController extends Controller
 		{
 			$model->attributes=$_POST['Publication'];
 			$model->fld_date_stored=$model->assembleSqlDate($model->fld_date_stored);
+			print_r($model->attributes);
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->key_pub));
 		}
@@ -140,7 +141,7 @@ class PublicationController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Publication('search');
+		$model=new Publication('searchByPublication');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Publication']))
 			$model->attributes=$_GET['Publication'];
@@ -187,15 +188,18 @@ class PublicationController extends Controller
 		$formModel->key_dept=$model->key_dept;
 		$formModel->key_pub=$publication;
 
-		$gridModel=new Author('searchByPublication');
-		$gridModel->unsetAttributes();  // clear any default values
-		if(isset($_GET['Author']))
+		$gridModel=new Author();
+		$gridModel->unsetAttributes();
+		if(isset($_GET['Author'])){
 			$gridModel->attributes=$_GET['Author'];
-		
+		}
+			
+		$deptFilterList=CHtml::listData(Department::model()->findAll(), 'key_dept', 'fld_name'); 
 		$this->layout="profile";
 		$this->render('manageAuthor', array(
 				'model'=>$formModel,
 				'deptList'=>$deptList,
+				'deptFilterList'=>$deptFilterList,
 				'gridModel'=>$gridModel
 		));
 	}
