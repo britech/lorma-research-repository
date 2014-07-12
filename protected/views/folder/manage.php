@@ -56,6 +56,13 @@ if($model->isNewRecord){
 		<?php echo $form->textField($model,'fld_group_name',array('size'=>50)); ?>
 		<?php echo $form->error($model,'fld_group_name'); ?>
 	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'fld_order');?>
+		<?php echo $form->textField($model,'fld_order',array('size'=>50)); ?>
+		<?php echo $form->error($model,'fld_order'); ?>
+		<p class="hint">Note: 1 as the highest order</p>
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fld_description'); ?>
@@ -78,6 +85,7 @@ if($model->isNewRecord){
 			'filter'=>$gridModel,
 			'columns'=>array(
 					'fld_group_name',
+					'fld_order',
 					array(
 						'class'=>'CButtonColumn',
 					),
@@ -89,6 +97,7 @@ if($model->isNewRecord){
 		'dataProvider'=>$gridModel->search(),
 		'columns'=>array(
 				'fld_group_name',
+				'fld_order',
 				array(
 					'class'=>'CButtonColumn',
 				),
