@@ -7,6 +7,10 @@
  * @property integer $key_pub_folder
  * @property integer $key_pub
  * @property integer $key_folder
+ *
+ * The followings are the available model relations:
+ * @property Publication $publication
+ * @property Folder $folder
  */
 class FileGroup extends CActiveRecord
 {
@@ -27,7 +31,7 @@ class FileGroup extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('key_pub, key_folder', 'required'),
-			array('key_pub, key_folder', 'numerical', 'integerOnly'=>true),
+			array('key_pub, key_folder', 'numerical', 'integerOnly'=>true, 'min'=>1, 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('key_pub_folder, key_pub, key_folder', 'safe', 'on'=>'search'),
@@ -42,6 +46,8 @@ class FileGroup extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'publication' => array(self::BELONGS_TO, 'Publication', 'key_pub'),
+			'folder' => array(self::BELONGS_TO, 'Folder', 'key_folder'),
 		);
 	}
 
