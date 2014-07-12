@@ -32,7 +32,7 @@ class Folder extends CActiveRecord
 		return array(
 			array('fld_group_name, fld_order', 'required'),
 			array('fld_description', 'safe'),
-			array('fld_order', 'numerical', 'integerOnly'=>true),
+			array('fld_order', 'numerical', 'integerOnly'=>true, 'min'=>1, 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('key_folder_group, fld_group_name, fld_description', 'safe', 'on'=>'search'),
