@@ -161,9 +161,8 @@ class Publication extends CActiveRecord
 	}
 	
 	public function assembleSqlDate($date){
-		$formatDate = explode('/',$date);
-		$sqlDate = $formatDate[2]."-".$formatDate[1]."-".$formatDate[0];
-		return $sqlDate;
+		$formatDate = date_create($date);
+		return date_format($formatDate, 'Y-m-d');
 	}
 	
 	public function assembleHumanReadableDate($date){
