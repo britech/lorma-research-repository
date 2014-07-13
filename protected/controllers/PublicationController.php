@@ -36,7 +36,11 @@ class PublicationController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','author','enlistAuthor','folder','assignFolder','file','insertFile'),
+				'actions'=>array('admin', 'delete',
+								 'author', 'enlistAuthor',
+								 'folder', 'assignFolder',
+								 'file', 'downloadFile',
+								 'keyword', 'addKeyword'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -291,5 +295,29 @@ class PublicationController extends Controller
 				'folderList'=>$folderList,
 				'gridModel'=>new File()
 		));
+	}
+	
+	//keyword component
+	public function actionKeyword($publication){
+		$model=new Keyword();
+		$model->key_pub=$publication;
+		
+		$this->layout="profile";
+		$this->render('manageKeyword', array(
+				'model'=>$model,
+				'gridModel'=>new Keyword(),
+		));
+	}
+	
+	public function actionAddKeyword($publication){
+		$model=new Keyword();
+		if(isset($_POST['Keyword'])){
+			$model->attributes=$_POST['Keyword'];
+			$model->fld_keyword=ucwords(strtolower($model->fld_keyword));
+			$model->save();
+			/* Yii::app()->db->createCommand()->insert($model->tableName(), 
+													array('fld_keyword'=>$model->fld_keyword)); */
+		}
+		$this->redirect(array('keyword', 'publication'=>$publication));
 	}
 }

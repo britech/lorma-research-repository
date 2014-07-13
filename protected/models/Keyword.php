@@ -5,11 +5,11 @@
  *
  * The followings are the available columns in table 'tbl_pub_keyword':
  * @property integer $key_pub_keyword
- * @property string $keyword
+ * @property string $fld_keyword
  * @property integer $key_pub
  *
  * The followings are the available model relations:
- * @property TblPub $keyPub
+ * @property Publication $publication
  */
 class Keyword extends CActiveRecord
 {
@@ -29,9 +29,9 @@ class Keyword extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('keyword, key_pub', 'required'),
+			array('fld_keyword, key_pub', 'required'),
 			array('key_pub', 'numerical', 'integerOnly'=>true),
-			array('keyword', 'length', 'max'=>50),
+			array('fld_keyword', 'length', 'max'=>150),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('key_pub_keyword, keyword, key_pub', 'safe', 'on'=>'search'),
@@ -46,7 +46,7 @@ class Keyword extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'keyPub' => array(self::BELONGS_TO, 'TblPub', 'key_pub'),
+			'publication' => array(self::BELONGS_TO, 'Publication', 'key_pub'),
 		);
 	}
 
@@ -56,9 +56,9 @@ class Keyword extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'key_pub_keyword' => 'Key Pub Keyword',
-			'keyword' => 'Keyword',
-			'key_pub' => 'Key Pub',
+			'key_pub_keyword' => 'Keyword ID',
+			'fld_keyword' => 'Keyword',
+			'key_pub' => 'Publication',
 		);
 	}
 
@@ -74,15 +74,18 @@ class Keyword extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($publication)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('key_pub_keyword',$this->key_pub_keyword);
-		$criteria->compare('keyword',$this->keyword,true);
-		$criteria->compare('key_pub',$this->key_pub);
+		//$criteria->compare('key_pub_keyword',$this->key_pub_keyword);
+		//$criteria->compare('keyword',$this->keyword,true);
+		//$criteria->compare('key_pub',$this->key_pub);
+		$criteria->condition="key_pub=:id";
+		$criteria->params=array(':id'=>$publication);
+		$criteria->order='fld_keyword ASC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

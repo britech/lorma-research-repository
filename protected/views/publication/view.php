@@ -11,7 +11,7 @@ $this->profileLink=array(
 		array('label'=>'Authors', 'url'=>array('publication/author', 'publication'=>$model->key_pub)),
 		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$model->key_pub)),
 		array('label'=>'Files', 'url'=>array('publication/file', 'publication'=>$model->key_pub)),
-		array('label'=>'Keywords', 'url'=>array('keyword/index')),
+		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$model->key_pub)),
 );
 
 $this->menu=array(
