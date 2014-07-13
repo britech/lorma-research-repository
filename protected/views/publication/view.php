@@ -1,7 +1,7 @@
 <?php
 /* @var $this PublicationController */
 /* @var $model Publication */
-
+//TODO put title here
 $this->breadcrumbs=array(
 	'Publications'=>array('index'),
 	'Publication Information',

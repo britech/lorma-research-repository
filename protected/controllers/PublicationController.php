@@ -36,7 +36,7 @@ class PublicationController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','author','enlistAuthor','folder','assignFolder'),
+				'actions'=>array('admin','delete','author','enlistAuthor','folder','assignFolder','file','insertFile'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -179,7 +179,7 @@ class PublicationController extends Controller
 		}
 	}
 	
-	
+	//author component
 	public function actionAuthor($publication){
 		$model=$this->loadModel($publication);
 		$deptList=CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
@@ -221,6 +221,7 @@ class PublicationController extends Controller
 		$this->redirect(array('author', 'publication'=>$publication));
 	}
 	
+	//file group component
 	public function actionFolder($publication){
 		$model=$this->loadModel($publication);
 		
@@ -246,5 +247,49 @@ class PublicationController extends Controller
 			$model->save();
 		}
 		$this->redirect(array('folder','publication'=>$publication));
+	}
+	
+	//file component
+	public function actionFile($publication){
+		$publicationModel=$this->loadModel($publication);
+		
+		$formModel=new File();
+		$formModel->key_pub=$publicationModel->key_pub;
+		
+		if(isset($_POST['File'])){
+			$formModel->attributes=$_POST['File'];
+			if($formModel->validate()){
+				
+				//file upload handling
+				$repoDirectory=Yii::getPathOfAlias('application.repository');
+				$file=CUploadedFile::getInstance($formModel, 'fld_filename');
+				if(!file_exists($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/')){
+					mkdir($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/',0777,true);
+				}
+				$file->saveAs($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/'.$file->getName());
+				
+				//save to db
+				$formModel->fld_filename=$file->getName();
+				$formModel->save();
+				
+				$this->redirect(array('file','publication'=>$publication));
+			}
+		}
+		
+		$fileGroupList=FileGroup::model()->findAllBySql('SELECT key_pub_folder, t1.key_folder_group, key_pub, fld_group_name 
+				FROM tbl_pub_folder t1 
+				JOIN tbl_folder_group t2 ON t1.key_folder_group=t2.key_folder_group 
+				WHERE key_pub=:pub ORDER BY fld_order ASC', array(':pub'=>$publication));
+		
+		$folderList=CHtml::listData($fileGroupList,'FolderId','FolderName');
+		
+		$this->layout="profile";
+		$this->render('manageFile', array(
+				'model'=>$publicationModel,
+				'fileGroup'=>$fileGroupList,
+				'formModel'=>$formModel,
+				'folderList'=>$folderList,
+				'gridModel'=>new File()
+		));
 	}
 }

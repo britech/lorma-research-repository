@@ -104,4 +104,12 @@ class FileGroup extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	public function getFolderName(){
+		return $this->folder->fld_group_name;
+	}
+	
+	public function getFolderId(){
+		return $this->folder->key_folder_group;
+	}
 }
