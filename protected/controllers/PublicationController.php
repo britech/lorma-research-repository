@@ -37,7 +37,7 @@ class PublicationController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin', 'delete',
-								 'author', 'enlistAuthor',
+								 'author', 'enlistAuthor', 'updateAuthor', 'deleteAuthor',
 								 'folder', 'assignFolder',
 								 'file', 'downloadFile',
 								 'keyword', 'addKeyword'),
@@ -223,6 +223,46 @@ class PublicationController extends Controller
 														  'key_dept'=>$model->key_dept));
 		}
 		$this->redirect(array('author', 'publication'=>$publication));
+	}
+	
+	public function actionUpdateAuthor($id){
+		$deptList=CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
+		
+		$formModel=$this->loadAuthorModel($id);
+		
+		if(isset($_POST['Author'])){
+			$formModel->attributes=$_POST['Author'];
+			if($formModel->save()){
+				$this->redirect(array('publication/author','publication'=>$formModel->key_pub));
+			}
+		}
+		
+		$this->layout="profile";
+		$this->render('manageAuthor', array(
+				'model'=>$formModel,
+				'deptList'=>$deptList,
+				'gridModel'=>new Author()
+		));
+	}
+	
+	public function actionDeleteAuthor($id){
+		$tempModel=$this->loadAuthorModel($id);
+		$publication=$tempModel->key_pub;
+		
+		$model=$this->loadAuthorModel($id);
+		$model->delete();
+		
+		$this->redirect(array('author', 'publication'=>$publication));
+	}
+	
+	/**
+	 * @return Author
+	 */
+	private function loadAuthorModel($id){
+		$model=Author::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
 	}
 	
 	//file group component

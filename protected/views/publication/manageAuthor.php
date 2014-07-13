@@ -64,7 +64,8 @@ $this->menu=array(
 		<?php echo $form->labelEx($model,'key_dept'); ?>
 		<?php echo $form->dropDownList($model,'key_dept',$deptList); ?>
 		<?php echo $form->error($model,'key_dept'); ?>
-		<?php echo $form->hiddenField($model, 'key_pub')?>
+		<?php echo $form->hiddenField($model, 'key_pub');?>
+		<?php if(!$model->isNewRecord){echo $form->hiddenField($model, 'key_author');}?>
 	</div>
 
 	<div class="row buttons">
@@ -90,8 +91,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		array(
 			'class'=>'CButtonColumn',
 			'template'=>'{update}{delete}',
-			'updateButtonUrl'=>'array("publication/updateAuthor", "id"=>$data->key_author, "publication"=>$data->key_pub)',
-			'deleteButtonUrl'=>'array("publication/deleteAuthor", "id"=>$data->key_author, "publication"=>$data->key_pub)'
+			'updateButtonUrl'=>'array("publication/updateAuthor", "id"=>$data->key_author)',
+			'deleteButtonUrl'=>'array("publication/deleteAuthor", "id"=>$data->key_author)'
 		),
 	),
 )); ?>

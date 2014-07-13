@@ -34,7 +34,7 @@ class Author extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fld_lname, fld_fname, fld_mname, key_dept, key_pub, fld_designation', 'required'),
+			array('fld_lname, fld_fname, fld_mname, key_dept, key_pub', 'required'),
 			array('key_dept, key_pub', 'numerical', 'integerOnly'=>true),
 			array('fld_lname, fld_fname, fld_mname', 'length', 'max'=>50),
 			// The following rule is used by search().
