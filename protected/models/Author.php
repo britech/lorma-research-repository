@@ -89,10 +89,10 @@ class Author extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('fld_fname',$this->fld_fname,true);
-		$criteria->compare('fld_lname',$this->fld_lname,true);
-		$criteria->compare('fld_mname',$this->fld_mname,true);
-		$criteria->compare('key_dept',$this->key_dept);
+		//$criteria->compare('fld_fname',$this->fld_fname,true);
+		//$criteria->compare('fld_lname',$this->fld_lname,true);
+		//$criteria->compare('fld_mname',$this->fld_mname,true);
+		//$criteria->compare('key_dept',$this->key_dept);
 		//$criteria->compare('key_pub', $this->key_pub);
 		//$criteria->compare('fld_designation',$this->fld_designation,true);
 		$criteria->with=array('department');
