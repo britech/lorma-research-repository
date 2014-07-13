@@ -59,7 +59,7 @@ class FileGroup extends CActiveRecord
 		return array(
 			'key_pub_folder' => 'FileGroup ID',
 			'key_pub' => 'Publication',
-			'key_folder' => 'Folder',
+			'key_folder_group' => 'Folder',
 		);
 	}
 

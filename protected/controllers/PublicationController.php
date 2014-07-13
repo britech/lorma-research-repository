@@ -38,7 +38,7 @@ class PublicationController extends Controller
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin', 'delete',
 								 'author', 'enlistAuthor', 'updateAuthor', 'deleteAuthor',
-								 'folder', 'assignFolder',
+								 'folder', 'assignFolder', 'removeFolder',
 								 'file', 'downloadFile',
 								 'keyword', 'addKeyword'),
 				'users'=>array('admin'),
@@ -291,6 +291,25 @@ class PublicationController extends Controller
 			$model->save();
 		}
 		$this->redirect(array('folder','publication'=>$publication));
+	}
+	
+	public function actionRemoveFolder($id){
+		$tempModel=$this->loadFileGroupModel($id);
+		$publication=$tempModel->key_pub;
+		
+		$this->loadFileGroupModel($id)->delete();
+		
+		$this->redirect(array('view','id'=>$publication));
+	}
+	
+	/**
+	 * @return FileGroup
+	 */
+	private function loadFileGroupModel($id){
+		$model=FileGroup::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
 	}
 	
 	//file component

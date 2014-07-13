@@ -9,8 +9,8 @@ $this->breadcrumbs=array(
 $this->profileLink=array(
 		array('label'=>'Authors', 'url'=>array('publication/author', 'publication'=>$model->key_pub)),
 		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$model->key_pub)),
-		array('label'=>'Files', 'url'=>array('files/index')),
-		array('label'=>'Keywords', 'url'=>array('keyword/index')),
+		array('label'=>'Files', 'url'=>array('publication/file', 'publication'=>$model->key_pub)),
+		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$model->key_pub)),
 );
 
 $this->menu=array(
@@ -65,13 +65,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		'dataProvider'=>$gridModel->search($model->key_pub),
 		'columns'=>array(
 				array(
-					'name'=>'key_folder',
+					'name'=>'key_folder_group',
 					'value'=>'$data->folder->fld_group_name',
+					'htmlOptions'=>array('style'=>'width:70%'),
+					'sortable'=>false
 				),
 				array(
+					'header'=>'Action',
 					'class'=>'CButtonColumn',
 					'template'=>'{delete}',
-					'deleteButtonUrl'=>'array("publication/removeFolder", "id"=>$data->key_pub_folder, "publication"=>$data->key_pub)'
+					'deleteButtonUrl'=>'array("publication/removeFolder","id"=>$data->key_pub_folder)',
+					'afterDelete'=>'function(link, success, data){ if(success) window.location=window.location}'
 				),
 		),
+		'emptyText'=>'No folders linked'
 )); ?>
