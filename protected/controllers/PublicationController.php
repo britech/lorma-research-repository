@@ -39,7 +39,7 @@ class PublicationController extends Controller
 				'actions'=>array('admin', 'delete',
 								 'author', 'enlistAuthor', 'updateAuthor', 'deleteAuthor',
 								 'folder', 'assignFolder', 'removeFolder',
-								 'file', 'downloadFile',
+								 'file', 'downloadFile', 'updateFile', 'deleteFile',
 								 'keyword', 'addKeyword'),
 				'users'=>array('admin'),
 			),
@@ -314,10 +314,10 @@ class PublicationController extends Controller
 	
 	//file component
 	public function actionFile($publication){
-		$publicationModel=$this->loadModel($publication);
+		//$publicationModel=$this->loadModel($publication);
 		
 		$formModel=new File();
-		$formModel->key_pub=$publicationModel->key_pub;
+		$formModel->key_pub=$publication;
 		
 		if(isset($_POST['File'])){
 			$formModel->attributes=$_POST['File'];
@@ -348,12 +348,86 @@ class PublicationController extends Controller
 		
 		$this->layout="profile";
 		$this->render('manageFile', array(
-				'model'=>$publicationModel,
+				//'model'=>$publicationModel,
 				'fileGroup'=>$fileGroupList,
 				'formModel'=>$formModel,
 				'folderList'=>$folderList,
 				'gridModel'=>new File()
 		));
+	}
+
+	public function actionUpdateFile($id){
+		$formModel=$this->loadFileModel($id);
+		
+		if(isset($_POST['File'])){
+			$oldModel=new File();
+			$oldModel->key_pub=$formModel->key_pub;
+			$oldModel->key_folder_group=$formModel->key_folder_group;
+			$oldModel->fld_filename=$formModel->fld_filename;
+			
+			$formModel=new File('update');
+			$formModel->key_pub_file=$_POST['File']['key_pub_file'];
+			$formModel->key_pub=$_POST['File']['key_pub'];
+			$formModel->key_folder_group=$_POST['File']['key_folder_group'];
+			$formModel->fld_file_title=$_POST['File']['fld_file_title'];
+			$formModel->fld_file_position=$_POST['File']['fld_file_position'];
+			$formModel->fld_dload_restriction=$_POST['File']['fld_dload_restriction'];
+			$formModel->fld_filename=$_POST['File']['fld_filename'];
+			
+			if($formModel->validate()){
+				if($oldModel->fld_filename!=$newFilename){
+					$repoDirectory=Yii::getPathOfAlias('application.repository');
+					
+					//delete previous file location
+					unlink($repoDirectory.'/pub-'.$oldModel->key_pub.'/folder-'.$oldModel->key_folder_group.'/'.$oldModel->fld_filename);
+					
+					
+					//upload new file
+					$file=CUploadedFile::getInstance($formModel, 'fld_filename');
+					if(!file_exists($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/')){
+						mkdir($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/',0777,true);
+					}
+					$file->saveAs($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/'.$file->getName());
+					$formModel->fld_filename=$file->getName();
+				}
+				$formModel->save();
+				$this->redirect(array('file','publication'=>$publication));
+			}
+		}
+		
+		$fileGroupList=FileGroup::model()->findAllBySql('SELECT key_pub_folder, t1.key_folder_group, key_pub, fld_group_name
+				FROM tbl_pub_folder t1
+				JOIN tbl_folder_group t2 ON t1.key_folder_group=t2.key_folder_group
+				WHERE key_pub=:pub ORDER BY fld_order ASC', array(':pub'=>$formModel->key_pub));
+		
+		$folderList=CHtml::listData($fileGroupList,'FolderId','FolderName');
+		
+		$this->layout="profile";
+		$this->render('manageFile', array(
+				//'model'=>$publicationModel,
+				'fileGroup'=>$fileGroupList,
+				'formModel'=>$formModel,
+				'folderList'=>$folderList,
+				'gridModel'=>new File()
+		));
+	}
+
+	public function actionDeleteFile($id){
+		$fileModel=$this->loadFileModel($id);
+		$repoDirectory=Yii::getPathOfAlias('application.repository');
+		
+		unlink($repoDirectory.'/pub-'.$fileModel->key_pub.'/folder-'.$fileModel->folder->key_folder_group.'/'.$fileModel->fld_filename);
+		$fileModel->delete();
+	}
+	
+	/**
+	 * @return File
+	 */
+	private function loadFileModel($id){
+		$model=File::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
 	}
 	
 	//keyword component

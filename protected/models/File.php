@@ -24,7 +24,7 @@ class File extends CActiveRecord
 	const RESTRICTION_DLOAD_PRIVATE="P";
 	
 	public static function getDownloadRestrictionTypes(){
-		return array(self::RESTRICTION_DLOAD_UNAUTH=>'Everyone',
+		return array(self::RESTRICTION_DLOAD_UNAUTH=>'Downloadable by everyone',
 					 self::RESTRICTION_DLOAD_IDENTITY=>'Require user credential',
 					 self::RESTRICTION_DLOAD_PRIVATE=>'Downloadable only by RnD Staff');
 	}
@@ -57,9 +57,10 @@ class File extends CActiveRecord
 			array('key_folder_group, fld_file_position, key_pub', 'numerical', 'integerOnly'=>true, 'min'=>1),
 			array('fld_dload_restriction', 'length', 'max'=>5),
 			array('fld_filename','file','types'=>array('doc','docx','pdf','xls','xlsx')),
+			array('fld_filename','file','types'=>array('doc','docx','pdf','xls','xlsx'), 'allowEmpty'=>true,'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('key_pub_file, fld_file_title, key_folder_group, fld_file_position, fld_no_pages, key_pub, fld_dload_restriction', 'safe', 'on'=>'search'),
+			array('key_pub_file, fld_file_title, key_folder_group, fld_file_position, key_pub, fld_dload_restriction, fld_filename', 'safe', 'on'=>'search'),
 		);
 	}
 
