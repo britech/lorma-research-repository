@@ -10,7 +10,7 @@ $this->profileLink=array(
 		array('label'=>'Authors', 'url'=>array('publication/author', 'publication'=>$formModel->key_pub)),
 		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$formModel->key_pub)),
 		array('label'=>'Files', 'url'=>array('publication/file', 'publication'=>$formModel->key_pub)),
-		array('label'=>'Keywords', 'url'=>array('keyword/index')),
+		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$model->key_pub)),
 );
 
 $this->menu=array(
