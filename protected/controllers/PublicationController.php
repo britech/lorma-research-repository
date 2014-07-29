@@ -40,7 +40,7 @@ class PublicationController extends Controller
 								 'author', 'enlistAuthor', 'updateAuthor', 'deleteAuthor',
 								 'folder', 'assignFolder', 'removeFolder',
 								 'file', 'downloadFile', 'updateFile', 'deleteFile',
-								 'keyword', 'addKeyword'),
+								 'keyword', 'addKeyword', 'updateKeyword', 'deleteKeyword'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -452,5 +452,37 @@ class PublicationController extends Controller
 													array('fld_keyword'=>$model->fld_keyword)); */
 		}
 		$this->redirect(array('keyword', 'publication'=>$publication));
+	}
+	
+	public function actionUpdateKeyword($id){
+		$model=$this->loadKeywordModel($id);
+		
+		if(isset($_POST['Keyword'])){
+			$model->attributes=$_POST['Keyword'];
+			$model->fld_keyword=ucwords(strtolower($model->fld_keyword));
+			$model->save();
+			$this->redirect(array('keyword', 'publication'=>$model->key_pub));
+		}
+			
+		
+		$this->layout="profile";
+		$this->render('manageKeyword', array(
+				'model'=>$model,
+				'gridModel'=>new Keyword(),
+		));
+	}
+	
+	public function actionDeleteKeyword($id){
+		$this->loadKeywordModel($id)->delete();
+	}
+	
+	/**
+	 * @return Keyword
+	 */
+	private function loadKeywordModel($id){
+		$model=Keyword::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
 	}
 }

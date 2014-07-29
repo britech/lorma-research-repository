@@ -65,7 +65,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'class'=>'CButtonColumn',
 					'template'=>'{update}{delete}',
 					'updateButtonUrl'=>'array("publication/updateKeyword", "id"=>$data->key_pub_keyword)',
-					'deleteButtonUrl'=>'array("publication/deleteKeyword", "id"=>$data->key_pub_keyword)'
+					'deleteButtonUrl'=>'array("publication/deleteKeyword", "id"=>$data->key_pub_keyword)',
+					'afterDelete'=>'function(link,success,data){if(success) window.location=window.location}'
 				),
 		),
 ));
