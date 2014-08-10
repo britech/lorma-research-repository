@@ -9,10 +9,10 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Publication', 'url'=>array('index')),
-	array('label'=>'Create Publication', 'url'=>array('create')),
-	array('label'=>'View Publication', 'url'=>array('view', 'id'=>$model->key_pub)),
-	array('label'=>'Manage Publication', 'url'=>array('admin')),
+		array('label'=>'Delete Publication', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->key_pub),'confirm'=>'Are you sure you want to delete this item?')),
+		array('label'=>'Publication Directory', 'url'=>array('index')),
+		array('label'=>'Upload a Publication', 'url'=>array('create')),
+		array('label'=>'Search a Publication', 'url'=>array('search')),
 );
 ?>
 

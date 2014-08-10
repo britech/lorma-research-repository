@@ -131,24 +131,7 @@ class Publication extends CActiveRecord
 		));
 	}
 	
-	public function searchByPublication(){
-		$criteria=new CDbCriteria;
-		
-		$criteria->compare('key_pub',$this->key_pub);
-		$criteria->compare('fld_pub_title',$this->fld_pub_title,true);
-		$criteria->compare('fld_txt_page',$this->fld_txt_page);
-		$criteria->compare('fld_no_page',$this->fld_no_page);
-		$criteria->compare('fld_location',$this->fld_location,true);
-		$criteria->compare('key_dept',$this->key_dept);
-		$criteria->compare('fld_date_stored',$this->fld_date_stored,true);
-		$criteria->compare('fld_format_type',$this->fld_format_type,true);
-		$criteria->compare('fld_is_visible',$this->fld_is_visible);
-		
-		return new CActiveDataProvider($this, array(
-				'criteria'=>$criteria,
-		));
-	}
-
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

@@ -10,7 +10,7 @@ $this->profileLink=array(
 		array('label'=>'Authors', 'url'=>array('publication/author', 'publication'=>$formModel->key_pub)),
 		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$formModel->key_pub)),
 		array('label'=>'Files', 'url'=>array('publication/file', 'publication'=>$formModel->key_pub)),
-		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$model->key_pub)),
+		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$formModel->key_pub)),
 );
 
 $this->menu=array(
@@ -60,11 +60,13 @@ $this->menu=array(
 		<?php echo $form->error($formModel,'fld_file_position'); ?>
 	</div>
 
+	<?php if($formModel->isNewRecord):?>
 	<div class="row">
 		<?php echo $form->labelEx($formModel,'fld_filename'); ?>
 		<?php echo $form->fileField($formModel,'fld_filename'); ?>
 		<?php echo $form->error($formModel,'fld_filename'); ?>		
 	</div>
+	<?php endif;?>
 	
 	<div class="row">
 		<?php echo $form->labelEx($formModel,'fld_dload_restriction'); ?>

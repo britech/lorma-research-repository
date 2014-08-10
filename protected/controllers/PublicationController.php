@@ -28,15 +28,11 @@ class PublicationController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index', 'view', 'search'),
 				'users'=>array('*'),
 			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin', 'delete',
+				'actions'=>array('create', 'delete', 'update',
 								 'author', 'enlistAuthor', 'updateAuthor', 'deleteAuthor',
 								 'folder', 'assignFolder', 'removeFolder',
 								 'file', 'downloadFile', 'updateFile', 'deleteFile',
@@ -105,7 +101,7 @@ class PublicationController extends Controller
 		{
 			$model->attributes=$_POST['Publication'];
 			$model->fld_date_stored=$model->assembleSqlDate(empty($model->fld_date_stored) ? $oldDate : $model->fld_date_stored);
-			if($model->save())
+			if($model->validate() && $model->save())
 				$this->redirect(array('view','id'=>$model->key_pub));
 		}
 		$deptList=CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
@@ -140,19 +136,23 @@ class PublicationController extends Controller
 		));
 	}
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Publication('searchByPublication');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Publication']))
-			$model->attributes=$_GET['Publication'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+	public function actionSearch(){
+		$dataProvider = new CActiveDataProvider('Publication');
+		$model = new SearchCriteria();
+		$deptList = CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
+		
+		if(isset($_POST['SearchCriteria'])){
+			$keywords = explode(', ',$_POST['SearchCriteria']['keywords']);
+			$authors = explode(', ',$_POST['SearchCriteria']['authorLastNames']);
+			
+			
+			
+			print_r($_POST['SearchCriteria']);
+			die();
+		}
+		
+		$this->layout="column1";
+		$this->render('search', array('dataProvider'=>$dataProvider, 'model'=>$model, 'deptList'=>$deptList));
 	}
 
 	/**
@@ -162,7 +162,7 @@ class PublicationController extends Controller
 	 * @return Publication the loaded model
 	 * @throws CHttpException
 	 */
-	public function loadModel($id)
+	private function loadModel($id)
 	{
 		$model=Publication::model()->findByPk($id);
 		if($model===null)
@@ -360,38 +360,11 @@ class PublicationController extends Controller
 		$formModel=$this->loadFileModel($id);
 		
 		if(isset($_POST['File'])){
-			$oldModel=new File();
-			$oldModel->key_pub=$formModel->key_pub;
-			$oldModel->key_folder_group=$formModel->key_folder_group;
-			$oldModel->fld_filename=$formModel->fld_filename;
-			
-			$formModel=new File('update');
-			$formModel->key_pub_file=$_POST['File']['key_pub_file'];
-			$formModel->key_pub=$_POST['File']['key_pub'];
-			$formModel->key_folder_group=$_POST['File']['key_folder_group'];
-			$formModel->fld_file_title=$_POST['File']['fld_file_title'];
-			$formModel->fld_file_position=$_POST['File']['fld_file_position'];
-			$formModel->fld_dload_restriction=$_POST['File']['fld_dload_restriction'];
-			$formModel->fld_filename=$_POST['File']['fld_filename'];
+			$formModel->attributes = $_POST['File'];
 			
 			if($formModel->validate()){
-				if($oldModel->fld_filename!=$newFilename){
-					$repoDirectory=Yii::getPathOfAlias('application.repository');
-					
-					//delete previous file location
-					unlink($repoDirectory.'/pub-'.$oldModel->key_pub.'/folder-'.$oldModel->key_folder_group.'/'.$oldModel->fld_filename);
-					
-					
-					//upload new file
-					$file=CUploadedFile::getInstance($formModel, 'fld_filename');
-					if(!file_exists($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/')){
-						mkdir($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/',0777,true);
-					}
-					$file->saveAs($repoDirectory.'/pub-'.$publication.'/folder-'.$formModel->key_folder_group.'/'.$file->getName());
-					$formModel->fld_filename=$file->getName();
-				}
 				$formModel->save();
-				$this->redirect(array('file','publication'=>$publication));
+				$this->redirect(array('file','publication'=>$formModel->publication->key_pub));
 			}
 		}
 		
