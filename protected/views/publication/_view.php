@@ -4,7 +4,7 @@
 
 $keywords = array();
 foreach($data->keywords as $keyword){
-	array_push($keywords, '<a href="'.$this->createUrl('publication/searchByKeyword', array('keyword'=>$keyword->key_pub_keyword)).'">'.$keyword->fld_keyword.'</a>');
+	array_push($keywords, '<a href="'.$this->createUrl('publication/searchByKeyword', array('keyword'=>$keyword->fld_keyword)).'">'.$keyword->fld_keyword.'</a>');
 }
 
 $displayKeywords = implode(', ', $keywords);

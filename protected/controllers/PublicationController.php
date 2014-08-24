@@ -28,7 +28,7 @@ class PublicationController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index', 'view', 'search', 'file', 'downloadFile'),
+				'actions'=>array('index', 'view', 'search', 'file', 'downloadFile', 'searchByKeyword'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -472,5 +472,23 @@ class PublicationController extends Controller
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+	
+	
+	/**
+	 * search mechanisms - Search By Keyword
+	 */
+	public function actionSearchByKeyword($keyword){
+		$criteria=new CDbCriteria;
+		$criteria->with=array('publication');
+		$criteria->condition="fld_keyword=:keyword";
+		$criteria->params=array(':keyword'=>$keyword);
+		$criteria->order="fld_pub_title ASC";
+		
+		$dataProvider = new CActiveDataProvider(Keyword::model(), array('criteria'=>$criteria));
+		
+		$this->layout="column1";
+		
+		$this->render("keywordSearch", array('dataProvider'=>$dataProvider));
 	}
 }
