@@ -36,7 +36,7 @@
 			<a href="<?php echo $this->createUrl("site/register");?>">Sign Up</a> 
 			<?php else:?>
 			<a href="<?php echo $this->createUrl("publication/tag");?>">My Library</a>&nbsp;|&nbsp;
-			<a href="<?php echo $this->createUrl("site/logout");?>">Logout&nbsp;()</a> 
+			<a href="<?php echo $this->createUrl("site/logout");?>">Logout&nbsp;(<?php echo Yii::app()->user->name;?>)</a> 
 			<?php endif;?>
 			
 		</div>
@@ -79,7 +79,7 @@
 		<?php 
 		$items=array();
 		
-		if(Yii::app()->user->isGuest){
+		if(Yii::app()->user->isGuest || Yii::app()->user->name='demo'){
 			$links=array(array('label'=>'Publication Directory', 'url'=>array('publication/index')));
 		} else{
 			$links=array(array('label'=>'Publications', 'url'=>array('publication/index')),

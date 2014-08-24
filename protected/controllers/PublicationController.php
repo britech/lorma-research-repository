@@ -28,7 +28,7 @@ class PublicationController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index', 'view', 'search'),
+				'actions'=>array('index', 'view', 'search', 'file', 'downloadFile'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -130,7 +130,7 @@ class PublicationController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Publication');
+		$dataProvider=new CActiveDataProvider('Publication', array('criteria'=>array('order'=>'fld_date_stored DESC')));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -391,6 +391,21 @@ class PublicationController extends Controller
 		
 		unlink($repoDirectory.'/pub-'.$fileModel->key_pub.'/folder-'.$fileModel->folder->key_folder_group.'/'.$fileModel->fld_filename);
 		$fileModel->delete();
+	}
+	
+	public function actionDownloadFile($id){
+		$data = $this->loadFileModel($id);
+		
+		if($data->fld_dload_restriction!=File::RESTRICTION_DLOAD_UNAUTH){
+			if(Yii::app()->user->isGuest){
+				Yii::app()->user->setFlash("");
+				$this->redirect("site/login");
+			} else{
+				
+			}
+		} else{
+			$this->redirect(array("publication/file", 'publication'=>$data->key_pub));
+		}
 	}
 	
 	/**

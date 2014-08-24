@@ -7,8 +7,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Upload a Publication', 'url'=>array('create')),
-	array('label'=>'Manage Folder Groups', 'url'=>array('folder/index')),
+	array('label'=>'Upload a Publication', 'url'=>array('create'), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
+	array('label'=>'Manage Folder Groups', 'url'=>array('folder/index'), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
 	array('label'=>'Search a Publication', 'url'=>array('search')),
 );
 ?>

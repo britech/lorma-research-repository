@@ -5,14 +5,17 @@ $this->breadcrumbs=array(
 	'Publication Information'=>array('publication/view', 'id'=>$model->key_pub),
 	'Authors'
 );
+$gridModel->key_pub=$model->key_pub;
+?>
 
+<?php
 $this->profileLink=array(
 		array('label'=>'Authors', 'url'=>array('publication/author', 'publication'=>$model->key_pub)),
 		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$model->key_pub)),
 		array('label'=>'Files', 'url'=>array('publication/file', 'publication'=>$model->key_pub)),
 		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$model->key_pub)),
 );
-
+	
 $this->menu=array(
 		array('label'=>'Update Publication', 'url'=>array('update', 'id'=>$model->key_pub)),
 		array('label'=>'Delete Publication', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->key_pub),'confirm'=>'Are you sure you want to delete this item?')),
@@ -23,20 +26,19 @@ $this->menu=array(
 ?>
 <h1>Authors</h1>
 <div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-		'id'=>'author-form',
-		'action'=>$model->isNewRecord ? array('publication/enlistAuthor', 'publication'=>$model->key_pub) : array('publication/updateAuthor', 'id'=>$model->key_author),
-		'enableClientValidation'=>true,
-		'clientOptions'=>array(
-				'validateOnSubmit'=>true,
-		),
-		// Please note: When you enable ajax validation, make sure the corresponding
-		// controller action is handling ajax validation correctly.
-		// There is a call to performAjaxValidation() commented in generated controller code.
-		// See class documentation of CActiveForm for details on this.
-		'enableAjaxValidation'=>false,
-)); ?>
+	<?php $form=$this->beginWidget('CActiveForm', array(
+			'id'=>'author-form',
+			'action'=>$model->isNewRecord ? array('publication/enlistAuthor', 'publication'=>$model->key_pub) : array('publication/updateAuthor', 'id'=>$model->key_author),
+			'enableClientValidation'=>true,
+			'clientOptions'=>array(
+					'validateOnSubmit'=>true,
+			),
+			// Please note: When you enable ajax validation, make sure the corresponding
+			// controller action is handling ajax validation correctly.
+			// There is a call to performAjaxValidation() commented in generated controller code.
+			// See class documentation of CActiveForm for details on this.
+			'enableAjaxValidation'=>false,
+	)); ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
@@ -72,11 +74,9 @@ $this->menu=array(
 		<?php echo $model->isNewRecord ? CHtml::submitButton('Create', array('class'=>'button green')) : CHtml::submitButton('Update', array('class'=>'button blue')); ?>
 	</div>
 
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+	<?php $this->endWidget(); ?>
+</div>
 <?php
-$gridModel->key_pub=$model->key_pub;
 $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'author-grid',
 	'dataProvider'=>$gridModel->search(),

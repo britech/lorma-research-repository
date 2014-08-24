@@ -1,47 +1,27 @@
 <?php
 /* @var $this PublicationController */
 /* @var $data Publication */
+
+$keywords = array();
+foreach($data->keywords as $keyword){
+	array_push($keywords, '<a href="'.$this->createUrl('publication/searchByKeyword', array('keyword'=>$keyword->key_pub_keyword)).'">'.$keyword->fld_keyword.'</a>');
+}
+
+$displayKeywords = implode(', ', $keywords);
 ?>
 
 <div class="view">
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('key_pub')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->key_pub), array('view', 'id'=>$data->key_pub)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_pub_title')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_pub_title); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_txt_page')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_txt_page); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_no_page')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_no_page); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_location')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_location); ?>
-	<br />
+	<p style="font-weight: bold;">
+		<?php echo CHtml::link(CHtml::encode($data->fld_pub_title), array('view', 'id'=>$data->key_pub)); ?>
+	</p>
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('key_dept')); ?>:</b>
-	<?php echo CHtml::encode($data->key_dept); ?>
+	<?php echo CHtml::encode($data->department->fld_name); ?>
 	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_date_stored')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_date_stored); ?>
+	
+	<b>Keywords:</b>
+	<?php echo $displayKeywords==null ? "No keywords defined" : $displayKeywords; ?>
 	<br />
-
-	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_format_type')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_format_type); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fld_is_visible')); ?>:</b>
-	<?php echo CHtml::encode($data->fld_is_visible); ?>
-	<br />
-
-	*/ ?>
-
+	
 </div>

@@ -78,5 +78,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'afterDelete'=>'function(link, success, data){ if(success) window.location=window.location}'
 				),
 		),
-		'emptyText'=>'No folders linked'
+		'emptyText'=>'No folders linked',
+		'summaryText'=>''
 )); ?>

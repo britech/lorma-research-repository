@@ -115,4 +115,8 @@ class Author extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	public function getDisplayName(){
+		return $this->fld_fname.' '.$this->fld_lname;
+	}
 }
