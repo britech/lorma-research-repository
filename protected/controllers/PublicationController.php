@@ -28,7 +28,7 @@ class PublicationController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index', 'view', 'search', 'file', 'downloadFile', 'searchByKeyword'),
+				'actions'=>array('index', 'view', 'search', 'file', 'downloadFile', 'searchByKeyword', 'searchAuthors', 'searchKeywords', 'search'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -134,25 +134,6 @@ class PublicationController extends Controller
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
-	}
-
-	public function actionSearch(){
-		$dataProvider = new CActiveDataProvider('Publication');
-		$model = new SearchCriteria();
-		$deptList = CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
-		
-		if(isset($_POST['SearchCriteria'])){
-			$keywords = explode(', ',$_POST['SearchCriteria']['keywords']);
-			$authors = explode(', ',$_POST['SearchCriteria']['authorLastNames']);
-			
-			
-			
-			print_r($_POST['SearchCriteria']);
-			die();
-		}
-		
-		$this->layout="column1";
-		$this->render('search', array('dataProvider'=>$dataProvider, 'model'=>$model, 'deptList'=>$deptList));
 	}
 
 	/**
@@ -487,8 +468,110 @@ class PublicationController extends Controller
 		
 		$dataProvider = new CActiveDataProvider(Keyword::model(), array('criteria'=>$criteria));
 		
-		$this->layout="column1";
+		$this->layout="column2";
 		
 		$this->render("keywordSearch", array('dataProvider'=>$dataProvider));
+	}
+	
+	/**
+	 * search utility function - Author's Surname list loading
+	 */
+	public function actionSearchAuthors(){
+		$lastName = $_POST['lastName'];
+		$rawResult = Author::model()->findAllBySql('SELECT DISTINCT(fld_lname) as fld_lname FROM tbl_pub_author 
+													WHERE fld_lname LIKE :l1 OR fld_lname LIKE :l2 OR fld_lname LIKE :l3', 
+												    array(':l1'=>$lastName.'%', ':l2'=>'%'.$lastName, ':l3'=>'%'.$lastName.'%'));
+		$results = array();
+		
+		foreach($rawResult as $result){
+			array_push($results, array('id'=>$result->fld_lname, 'name'=>$result->fld_lname));
+		}
+	
+		header("Content-type: application/json");
+		echo json_encode($results);
+		Yii::app()->end();	
+	}
+	
+	/**
+	 * search utility function - Keywords list loading
+	 */
+	public function actionSearchKeywords(){
+		$keyword = $_POST['keyword'];
+		$rawResult = Keyword::model()->findAllBySql('SELECT DISTINCT(fld_keyword) FROM tbl_pub_keyword
+													WHERE fld_keyword LIKE :k1 OR fld_keyword LIKE :k2 OR fld_keyword LIKE :k3',
+				array(':k1'=>$keyword.'%', ':k2'=>'%'.$keyword, ':k3'=>'%'.$keyword.'%'));
+		$results = array();
+	
+		foreach($rawResult as $result){
+			array_push($results, array('id'=>$result->fld_keyword, 'name'=>$result->fld_keyword));
+		}
+	
+		header("Content-type: application/json");
+		echo json_encode($results);
+		Yii::app()->end();
+	}
+	
+	/**
+	 * search mechanism - General Search
+	 */
+	public function actionSearch(){
+		$dataProvider = new CActiveDataProvider('Publication');
+		$model = new SearchCriteria();
+		$deptList = CHtml::listData(Department::model()->findAll(), 'key_dept', 'DepartmentLabel');
+	
+		if(isset($_POST['SearchCriteria'])){
+			$rawInput = new SearchCriteria();
+			$rawInput->attributes = $_POST['SearchCriteria'];
+			
+			$criteria = new CDbCriteria();
+			$criteria->distinct=true;
+			$criteria->together=true;
+			$criteria->with=array('department', 'authors', 'keywords');
+			$criteria->condition="t.key_dept=:dept";
+			
+			$parameterIds = array();
+			$parameterValues = array();
+			
+			/**
+			 * Check if the Publication title had been inputted a value
+			 */
+			if(!empty($rawInput->publicationTitle)){
+				$criteria->condition = $criteria->condition." AND (fld_pub_title LIKE :title1 OR fld_pub_title LIKE :title2 OR fld_pub_title LIKE :title3)";
+				array_push($parameterIds, ":title1");
+				array_push($parameterValues, $rawInput->publicationTitle."%");
+				
+				array_push($parameterIds, ":title2");
+				array_push($parameterValues, "%".$rawInput->publicationTitle."%");
+				
+				array_push($parameterIds, ":title3");
+				array_push($parameterValues, "%".$rawInput->publicationTitle);
+			}
+			
+			if(!empty($rawInput->authorLastNames)){
+				$criteria->condition = $criteria->condition." AND authors.fld_lname IN(:authors)";
+				array_push($parameterIds, ":authors");
+				array_push($parameterValues, $rawInput->authorLastNames);
+			}
+			
+			if(!empty($rawInput->keywords)){
+				$criteria->condition = $criteria->condition." AND keywords.fld_keyword IN(:keywords)";
+				array_push($parameterIds, ":keywords");
+				array_push($parameterValues, $rawInput->keywords);
+			}
+			
+			array_push($parameterIds, ":dept");
+			array_push($parameterValues, $rawInput->departmentOfOrigin);
+			
+			$criteria->params=array_combine($parameterIds, $parameterValues);
+			
+			$pageSize = $rawInput->limit!='*' ? $rawInput->limit : -1;
+			
+			$dataProvider = new CActiveDataProvider(Publication::model(), array('criteria'=>$criteria, 'pagination'=>array('pageSize'=>$pageSize)));
+			
+			$model->unsetAttributes();
+			$rawInput->unsetAttributes();
+		}
+		$this->layout="column1";
+		$this->render('search', array('dataProvider'=>$dataProvider, 'model'=>$model, 'deptList'=>$deptList));
 	}
 }

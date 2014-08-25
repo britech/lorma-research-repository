@@ -13,7 +13,7 @@ class SearchCriteria extends CFormModel{
 	const SIZE_100 = 100;
 	const SIZE_ALL = "*";
 	
-	public function getPaginationSizes(){
+	public function getPaginationSizes() {
 		return array(
 				self::SIZE_10=>self::SIZE_10,
 				self::SIZE_25=>self::SIZE_25,
@@ -23,9 +23,11 @@ class SearchCriteria extends CFormModel{
 		);
 	}
 	
+	public function rules() {
+		return array(array('publicationTitle, departmentOfOrigin, authorLastNames, keywords, limit', 'safe'));
+	}
 	
-	public function attributeLabels()
-	{
+	public function attributeLabels(){
 		return array(
 			'publicationTitle'=>'Title of Publication',
 			'departmentOfOrigin'=>'Department of Origin',

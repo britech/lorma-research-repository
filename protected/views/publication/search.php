@@ -1,5 +1,4 @@
 <h1>Search a Publication</h1>
-
 <div class="wide form">
 	<?php $form=$this->beginWidget('CActiveForm', array()); ?>
 	<div class="row">
@@ -14,12 +13,38 @@
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'authorLastNames'); ?>
-		<?php echo $form->textField($model,'authorLastNames', array('size'=>125)); ?>
+		<span style="display:inline-block;">
+		<?php $this->widget('ext.tokeninput.TokenInput', array(
+			'model'=>$model,
+			'attribute'=>'authorLastNames',
+			'url'=>array('searchAuthors'),
+			'options'=>array(
+				'method'=>'POST',
+				'queryParam'=>'lastName',
+				'animateDropdown'=>false,
+				'tokenDelimiter'=>',',
+				'preventDuplicates'=>true,
+			)
+		));?>
+		</span>
 		<?php echo $form->error($model,'authorLastNames'); ?>
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'keywords'); ?>
-		<?php echo $form->textField($model,'keywords', array('size'=>125)); ?>
+		<span style="display:inline-block;">
+			<?php $this->widget('ext.tokeninput.TokenInput', array(
+				'model'=>$model,
+				'attribute'=>'keywords',
+				'url'=>array('searchKeywords'),
+				'options'=>array(
+					'method'=>'POST',
+					'queryParam'=>'keyword',
+					'animateDropdown'=>false,
+					'tokenDelimiter'=>',',
+					'preventDuplicates'=>true,
+				)
+			));?>
+		</span>
 		<?php echo $form->error($model,'keywords'); ?>
 	</div>
 	<div class="row">
@@ -28,7 +53,14 @@
 		<?php echo $form->error($model,'limit'); ?>
 	</div>
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search', array('class'=>'button green')); ?>
+		<?php 
+		$input = filter_input(INPUT_POST, "SearchCriteria");
+		
+		echo CHtml::submitButton('Search', array('class'=>'button green')); 
+		
+		if(isset($input)){
+			echo CHtml::link('Restart Search', array('search'));
+		}?>
 	</div>
 	<?php $this->endWidget(); ?>
 </div>
