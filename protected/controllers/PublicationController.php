@@ -28,7 +28,8 @@ class PublicationController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index', 'view', 'search', 'file', 'downloadFile', 'searchByKeyword', 'searchAuthors', 'searchKeywords', 'search'),
+				'actions'=>array('index', 'view', 'search', 'file', 'downloadFile', 
+							     'searchByKeyword', 'searchByDepartment','searchAuthors', 'searchKeywords', 'search'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -471,6 +472,24 @@ class PublicationController extends Controller
 		$this->layout="column2";
 		
 		$this->render("keywordSearch", array('dataProvider'=>$dataProvider));
+	}
+
+	/**
+		search mechanisms - Search By Department
+	**/
+	public function actionSearchByDepartment($department){
+		$criteria=new CDbCriteria;
+		$criteria->with=array('department');
+		$criteria->condition="t.key_dept=:dept";
+		$criteria->params=array(':dept'=>$department);
+		$criteria->order="fld_pub_title ASC";
+		
+		$dataProvider = new CActiveDataProvider(Publication::model(), array('criteria'=>$criteria));
+		$departmentName = Department::model()->findByPk($department)->fld_name;
+
+		$this->layout="column2";
+		
+		$this->render("departmentSearch", array('dataProvider'=>$dataProvider, 'name'=>$departmentName));
 	}
 	
 	/**

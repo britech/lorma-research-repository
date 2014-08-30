@@ -17,7 +17,7 @@ $displayKeywords = implode(', ', $keywords);
 	</p>
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('key_dept')); ?>:</b>
-	<?php echo CHtml::encode($data->department->fld_name); ?>
+	<?php echo CHtml::link(CHtml::encode($data->department->fld_name), array('publication/searchByDepartment', 'department'=>$data->key_dept)); ?>
 	<br />
 	
 	<b>Keywords:</b>
