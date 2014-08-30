@@ -13,6 +13,7 @@ $this->profileLink=array(
 		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$model->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
 		array('label'=>'Files', 'url'=>array('publication/file', 'publication'=>$model->key_pub)),
 		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$model->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
+		array('label'=>'Add To My Library', 'url'=>array('publication/tagPublication', 'id'=>$model->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='admin'))
 );
 	
 $this->menu=array(
@@ -33,6 +34,14 @@ $keywords = array();
 foreach($model->keywords as $keyword){
 	array_push($keywords, '<a href="'.$this->createUrl('publication/searchByKeyword', array('keyword'=>$keyword->key_pub_keyword)).'">'.$keyword->fld_keyword.'</a>');
 }
+
+if(Yii::app()->user->hasFlash('notif')):?>
+<div class="flash-success">
+	<?php echo Yii::app()->user->getFlash('notif');?>
+</div>
+<?php
+endif;
+
 $this->widget('zii.widgets.CDetailView', array(
 			'data'=>$model,
 			'attributes'=>array(

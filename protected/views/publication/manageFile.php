@@ -11,7 +11,7 @@ $this->profileLink=array(
 		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
 		array('label'=>'Files', 'url'=>array('publication/file', 'publication'=>$formModel->key_pub)),
 		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
-		array('label'=>'Download All File', 'url'=>array('publication/downloadAllFiles', 'id'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo'))
+		array('label'=>'Download All Files', 'url'=>array('publication/downloadAllFiles', 'id'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='admin'))
 );
 
 $this->menu=array(

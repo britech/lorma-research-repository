@@ -36,9 +36,13 @@ class PublicationController extends Controller
 				'actions'=>array('create', 'delete', 'update',
 								 'author', 'enlistAuthor', 'updateAuthor', 'deleteAuthor',
 								 'folder', 'assignFolder', 'removeFolder',
-								 'file', 'downloadFile', 'downloadAllFiles','updateFile', 'deleteFile',
+								 'file','updateFile', 'deleteFile',
 								 'keyword', 'addKeyword', 'updateKeyword', 'deleteKeyword'),
 				'users'=>array('admin'),
+			),
+			array('allow',
+				'actions'=>array('downloadAllFiles', 'tagPublication'),
+				'users'=>array('demo')
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -392,7 +396,17 @@ class PublicationController extends Controller
 	}
 
 	public function actionDownloadAllFiles($id){
+		$name = 'pub-'.$id.'.zip';
+		$repoDirectory = Yii::getPathOfAlias('application.repository');
+		$zipPath = $repoDirectory.'/target/'.$name;
+		$folderPath = $repoDirectory.'/pub-'.$id;
+
+		$zipFile = new ZipArchive();
+		$zipFile->open($zipPath, ZipArchive::OVERWRITE);
+		$zipFile->addGlob($folderPath.'/*/*', GLOB_NOSORT, array('add_path'=>'pub-'.$id.'/', 'remove_all_path'=>true));
+		$zipFile->close();
 		
+		Yii::app()->getRequest()->sendFile($name, file_get_contents($zipPath));
 	}
 
 	private function sendDownloadedFile($fullPath, $data){
@@ -583,5 +597,10 @@ class PublicationController extends Controller
 		}
 		$this->layout="column1";
 		$this->render('search', array('dataProvider'=>$dataProvider, 'model'=>$model, 'deptList'=>$deptList));
+	}
+
+	public function actionTagPublication($id){
+		Yii::app()->user->setFlash('notif', 'Your publication is now added to your library. Please check your library now.');
+		$this->redirect(array('view', 'id'=>$id));
 	}
 }
