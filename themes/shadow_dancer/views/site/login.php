@@ -7,6 +7,12 @@ $this->breadcrumbs=array(
 
 <h1>Login</h1>
 
+<?php if(Yii::app()->user->hasFlash('notif')): ?>
+	<div class="flash-notice">
+		<?php echo Yii::app()->user->getFlash('notif'); ?>
+	</div>
+<?php endif;?>
+
 <p>Please fill out the following form with your login credentials:</p>
 
 <div class="form">

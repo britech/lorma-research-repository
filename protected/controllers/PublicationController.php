@@ -377,17 +377,22 @@ class PublicationController extends Controller
 	
 	public function actionDownloadFile($id){
 		$data = $this->loadFileModel($id);
-		
+		$repoDirectory=Yii::getPathOfAlias('application.repository');
+		$fullPath = $repoDirectory.'/pub-'.$data->key_pub.'/folder-'.$data->folder->key_folder_group.'/';
 		if($data->fld_dload_restriction!=File::RESTRICTION_DLOAD_UNAUTH){
 			if(Yii::app()->user->isGuest){
-				Yii::app()->user->setFlash("");
-				$this->redirect("site/login");
+				Yii::app()->user->setFlash("notif", "To download this file, please login to Lorma Colleges Online Research Repository. If you're not registered, please click the 'Sign Up' link to get a free account.");
+				$this->redirect(array("site/login"));
 			} else{
-				
+				$this->sendDownloadedFile($fullPath, $data);
 			}
 		} else{
-			$this->redirect(array("publication/file", 'publication'=>$data->key_pub));
+			$this->sendDownloadedFile($fullPath, $data);
 		}
+	}
+
+	private function sendDownloadedFile($fullPath, $data){
+		Yii::app()->getRequest()->sendFile($data->fld_filename, file_get_contents($fullPath.$data->fld_filename));
 	}
 	
 	/**
