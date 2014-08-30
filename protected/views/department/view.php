@@ -11,7 +11,7 @@ $this->menu=array(
 	array('label'=>'Manage Departments', 'url'=>array('index')),
 	array('label'=>'Update Department Info', 'url'=>array('update', 'id'=>$model->key_dept)),
 	array('label'=>'Delete Department', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->key_dept),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Linked Publications', 'url'=>array('publication/department', 'id'=>$model->key_dept)),
+	array('label'=>'Linked Publications', 'url'=>array('publication/searchByDepartment', 'department'=>$model->key_dept)),
 );
 ?>
 
