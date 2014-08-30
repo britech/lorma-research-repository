@@ -36,7 +36,7 @@ class PublicationController extends Controller
 				'actions'=>array('create', 'delete', 'update',
 								 'author', 'enlistAuthor', 'updateAuthor', 'deleteAuthor',
 								 'folder', 'assignFolder', 'removeFolder',
-								 'file', 'downloadFile', 'updateFile', 'deleteFile',
+								 'file', 'downloadFile', 'downloadAllFiles','updateFile', 'deleteFile',
 								 'keyword', 'addKeyword', 'updateKeyword', 'deleteKeyword'),
 				'users'=>array('admin'),
 			),
@@ -389,6 +389,10 @@ class PublicationController extends Controller
 		} else{
 			$this->sendDownloadedFile($fullPath, $data);
 		}
+	}
+
+	public function actionDownloadAllFiles($id){
+		
 	}
 
 	private function sendDownloadedFile($fullPath, $data){
