@@ -79,7 +79,7 @@
 		<?php 
 		$items=array();
 		
-		if(Yii::app()->user->isGuest || Yii::app()->user->name='demo'){
+		if(Yii::app()->user->isGuest || Yii::app()->user->name=='demo'){
 			$links=array(array('label'=>'Publication Directory', 'url'=>array('publication/index')));
 		} else{
 			$links=array(array('label'=>'Publications', 'url'=>array('publication/index')),
