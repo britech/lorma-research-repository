@@ -7,24 +7,24 @@ $this->breadcrumbs=array(
 );
 
 $this->profileLink=array(
-		array('label'=>'Authors', 'url'=>array('publication/author', 'publication'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
-		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
+		array('label'=>'Authors', 'url'=>array('publication/author', 'publication'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))),
+		array('label'=>'Folders', 'url'=>array('publication/folder', 'publication'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))),
 		array('label'=>'Files', 'url'=>array('publication/file', 'publication'=>$formModel->key_pub)),
-		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
-		array('label'=>'Download All Files', 'url'=>array('publication/downloadAllFiles', 'id'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='admin'))
+		array('label'=>'Keywords', 'url'=>array('publication/keyword', 'publication'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))),
+		array('label'=>'Download All Files', 'url'=>array('publication/downloadAllFiles', 'id'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_ADMINISTRATOR)))
 );
 
 $this->menu=array(
-		array('label'=>'Update Publication', 'url'=>array('update', 'id'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
+		array('label'=>'Update Publication', 'url'=>array('update', 'id'=>$formModel->key_pub), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))),
 		array('label'=>'Delete Publication', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$formModel->key_pub),'confirm'=>'Are you sure you want to delete this item?'),
-			  'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
+			  'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))),
 		array('label'=>'Publication Directory', 'url'=>array('index')),
-		array('label'=>'Upload a Publication', 'url'=>array('create'), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')),
+		array('label'=>'Upload a Publication', 'url'=>array('create'), 'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))),
 		array('label'=>'Search a Publication', 'url'=>array('search')),
 );?>
 <h1>Files</h1>
 
-<?php if(!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')):?>
+<?php if(!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))):?>
 <div class="form">
 	<?php $form=$this->beginWidget('CActiveForm', array(
 		'id'=>'file-form',
@@ -106,13 +106,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'fld_file_position',
 					'htmlOptions'=>array('style'=>'text-align:center; width: 10%;'),
 					'sortable'=>false,
-					'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')
+					'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))
 				),
 				array(
 					'name'=>'fld_dload_restriction',
 					'value'=>'File::getDownloadRestrictionDescription($data->fld_dload_restriction)',
 					'sortable'=>false,
-					'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')
+					'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))
 				),
 				array(
 					'class'=>'CButtonColumn',
@@ -122,7 +122,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'updateButtonUrl'=>'array("publication/updateFile", "id"=>$data->key_pub_file)',
 					'deleteButtonUrl'=>'array("publication/deleteFile", "id"=>$data->key_pub_file)',
 					'afterDelete'=>'function(link,success,data){if(success) window.location=window.location}',
-					'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->name=='demo')
+					'visible'=>!(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR))
 				),
 				array(
 					'class'=>'CButtonColumn',
@@ -130,7 +130,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'viewButtonUrl'=>'array("publication/downloadFile/","id"=>$data->key_pub_file)',
 					'viewButtonImageUrl'=>'../themes/shadow_dancer/images/small_icons/page_white_put.png',
 					'viewButtonOptions'=>array('title'=>'Download'),
-					'visible'=>Yii::app()->user->isGuest || Yii::app()->user->name=='demo'
+					'visible'=>Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR)
 				),
 		),
 		'summaryText'=>''

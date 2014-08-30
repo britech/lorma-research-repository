@@ -20,11 +20,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'sortable'=>false
 		),
 		array(
-			'name'=>'Department of Origin',
-			'value'=>'$data->department->fld_name',
-			'sortable'=>false
-		),
-		array(
 			'class'=>'CButtonColumn',
 			'template'=>'{view}',
 		),

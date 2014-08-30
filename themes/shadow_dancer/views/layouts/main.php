@@ -35,7 +35,7 @@
 			<a href="<?php echo $this->createUrl("site/login");?>">Member's Login</a>&nbsp;|&nbsp;
 			<a href="<?php echo $this->createUrl("site/register");?>">Sign Up</a> 
 			<?php else:?>
-			<a href="<?php echo $this->createUrl("publication/tag");?>">My Library</a>&nbsp;|&nbsp;
+			<a href="<?php echo $this->createUrl("publication/myLibrary", array('id'=>Yii::app()->user->id));?>">My Library</a>&nbsp;|&nbsp;
 			<a href="<?php echo $this->createUrl("site/logout");?>">Logout&nbsp;(<?php echo Yii::app()->user->name;?>)</a> 
 			<?php endif;?>
 			
@@ -79,7 +79,7 @@
 		<?php 
 		$items=array();
 		
-		if(Yii::app()->user->isGuest || Yii::app()->user->name=='demo'){
+		if(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR)){
 			$links=array(array('label'=>'Publication Directory', 'url'=>array('publication/index')));
 		} else{
 			$links=array(array('label'=>'Publications', 'url'=>array('publication/index')),

@@ -9,8 +9,8 @@
  * @property integer $key_user
  *
  * The followings are the available model relations:
- * @property TblPub $keyPub
- * @property TblUser $keyUser
+ * @property Publication $publication
+ * @property User $user
  */
 class TaggedPublication extends CActiveRecord
 {
@@ -46,8 +46,8 @@ class TaggedPublication extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'keyPub' => array(self::BELONGS_TO, 'TblPub', 'key_pub'),
-			'keyUser' => array(self::BELONGS_TO, 'TblUser', 'key_user'),
+			'publication' => array(self::BELONGS_TO, 'Publication', 'key_pub'),
+			'user' => array(self::BELONGS_TO, 'User', 'key_user'),
 		);
 	}
 
@@ -84,6 +84,7 @@ class TaggedPublication extends CActiveRecord
 		$criteria->compare('key_library',$this->key_library,true);
 		$criteria->compare('key_pub',$this->key_pub);
 		$criteria->compare('key_user',$this->key_user);
+		$criteria->with=array('publication');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

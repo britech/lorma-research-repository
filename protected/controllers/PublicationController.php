@@ -38,11 +38,13 @@ class PublicationController extends Controller
 								 'folder', 'assignFolder', 'removeFolder',
 								 'file','updateFile', 'deleteFile',
 								 'keyword', 'addKeyword', 'updateKeyword', 'deleteKeyword'),
-				'users'=>array('admin'),
+				'users'=>array('@'),
+				'roles'=>array(User::RESTRICTION_ADMINISTRATOR)
 			),
 			array('allow',
-				'actions'=>array('downloadAllFiles', 'tagPublication'),
-				'users'=>array('demo')
+				'actions'=>array('downloadAllFiles', 'tagPublication', 'myLibrary'),
+				'users'=>array('@'),
+				'roles'=>array(User::RESTRICTION_REGULAR)
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -498,7 +500,7 @@ class PublicationController extends Controller
 	}
 
 	/**
-		search mechanisms - Search By Department
+	*	search mechanisms - Search By Department
 	**/
 	public function actionSearchByDepartment($department){
 		$criteria=new CDbCriteria;
@@ -591,16 +593,41 @@ class PublicationController extends Controller
 			}
 			
 			$criteria->addColumnCondition(array('t.key_dept'=>$rawInput->departmentOfOrigin));
-			$pageSize = $rawInput->limit!='*' ? $rawInput->limit : -1;
+			$pageSize = $rawInput->limit!='*' ? array('pageSize'=>$rawInput->limit) : false;
 			
-			$dataProvider = new CActiveDataProvider(Publication::model(), array('criteria'=>$criteria, 'pagination'=>array('pageSize'=>$pageSize)));
+			$dataProvider = new CActiveDataProvider(Publication::model(), array('criteria'=>$criteria, 'pagination'=>$pageSize));
 		}
 		$this->layout="column1";
 		$this->render('search', array('dataProvider'=>$dataProvider, 'model'=>$model, 'deptList'=>$deptList));
 	}
 
 	public function actionTagPublication($id){
-		Yii::app()->user->setFlash('notif', 'Your publication is now added to your library. Please check your library now.');
+		$checker = TaggedPublication::model()->findByAttributes(array('key_pub'=>$id, 'key_user'=>Yii::app()->user->id));
+
+		if($checker === null){
+			$model = new TaggedPublication();
+			$model->key_pub=$id;
+			$model->key_user=Yii::app()->user->id;
+			$model->insert();
+		
+			Yii::app()->user->setFlash('notif', 'Your publication is now added to your library. Please check your library now.');
+		} else{
+			Yii::app()->user->setFlash('notif', 'Your publication has already been added to your library. Please check your library now.');
+		}
+
 		$this->redirect(array('view', 'id'=>$id));
+	}
+
+	public function actionMyLibrary($id){
+		$criteria = new CDbCriteria();
+		$criteria->condition="key_user=:user";
+		$criteria->with=array('publication');
+		$criteria->order="publication.fld_pub_title ASC";
+		$criteria->params=array(':user'=>$id);
+
+		$dataProvider = new CActiveDataProvider('TaggedPublication', array('criteria'=>$criteria));
+
+		$this->layout='column1';
+		$this->render('my-library', array('dataProvider'=>$dataProvider));
 	}
 }

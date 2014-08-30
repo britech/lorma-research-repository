@@ -28,6 +28,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		array(
 			'class'=>'CButtonColumn',
 			'template'=>'{view}',
+			'viewButtonUrl'=>'array("view","id"=>$data->publication->key_pub)'
 		),
 	),
 )); ?>
