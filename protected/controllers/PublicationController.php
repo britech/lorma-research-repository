@@ -527,49 +527,31 @@ class PublicationController extends Controller
 			$criteria->distinct=true;
 			$criteria->together=true;
 			$criteria->with=array('department', 'authors', 'keywords');
-			$criteria->condition="t.key_dept=:dept";
+			
+			//$criteria->condition="t.key_dept=:dept";
 			
 			$parameterIds = array();
 			$parameterValues = array();
 			
-			/**
-			 * Check if the Publication title had been inputted a value
-			 */
+			//append the title condition if inputted
 			if(!empty($rawInput->publicationTitle)){
-				$criteria->condition = $criteria->condition." AND (fld_pub_title LIKE :title1 OR fld_pub_title LIKE :title2 OR fld_pub_title LIKE :title3)";
-				array_push($parameterIds, ":title1");
-				array_push($parameterValues, $rawInput->publicationTitle."%");
-				
-				array_push($parameterIds, ":title2");
-				array_push($parameterValues, "%".$rawInput->publicationTitle."%");
-				
-				array_push($parameterIds, ":title3");
-				array_push($parameterValues, "%".$rawInput->publicationTitle);
+				$criteria->compare('t.fld_pub_title', $rawInput->publicationTitle, true);
 			}
 			
+			//append the lastnames condition if inputted
 			if(!empty($rawInput->authorLastNames)){
-				$criteria->condition = $criteria->condition." AND authors.fld_lname IN(:authors)";
-				array_push($parameterIds, ":authors");
-				array_push($parameterValues, $rawInput->authorLastNames);
+				$criteria->addInCondition('authors.fld_lname', explode('+',$rawInput->authorLastNames));
 			}
-			
+
+			//append the keywords condition if inputted
 			if(!empty($rawInput->keywords)){
-				$criteria->condition = $criteria->condition." AND keywords.fld_keyword IN(:keywords)";
-				array_push($parameterIds, ":keywords");
-				array_push($parameterValues, $rawInput->keywords);
+				$criteria->addInCondition('keywords.fld_keyword', explode('+', $rawInput->keywords));
 			}
 			
-			array_push($parameterIds, ":dept");
-			array_push($parameterValues, $rawInput->departmentOfOrigin);
-			
-			$criteria->params=array_combine($parameterIds, $parameterValues);
-			
+			$criteria->addColumnCondition(array('t.key_dept'=>$rawInput->departmentOfOrigin));
 			$pageSize = $rawInput->limit!='*' ? $rawInput->limit : -1;
 			
 			$dataProvider = new CActiveDataProvider(Publication::model(), array('criteria'=>$criteria, 'pagination'=>array('pageSize'=>$pageSize)));
-			
-			$model->unsetAttributes();
-			$rawInput->unsetAttributes();
 		}
 		$this->layout="column1";
 		$this->render('search', array('dataProvider'=>$dataProvider, 'model'=>$model, 'deptList'=>$deptList));

@@ -22,7 +22,7 @@
 				'method'=>'POST',
 				'queryParam'=>'lastName',
 				'animateDropdown'=>false,
-				'tokenDelimiter'=>',',
+				'tokenDelimiter'=>'+',
 				'preventDuplicates'=>true,
 			)
 		));?>
@@ -40,7 +40,7 @@
 					'method'=>'POST',
 					'queryParam'=>'keyword',
 					'animateDropdown'=>false,
-					'tokenDelimiter'=>',',
+					'tokenDelimiter'=>'+',
 					'preventDuplicates'=>true,
 				)
 			));?>
