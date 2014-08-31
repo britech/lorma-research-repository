@@ -84,7 +84,7 @@ class Keyword extends CActiveRecord
 		//$criteria->compare('keyword',$this->keyword,true);
 		//$criteria->compare('key_pub',$this->key_pub);
 		$criteria->with=array('publication');
-		$criteria->condition="key_pub=:id";
+		$criteria->condition="t.key_pub=:id";
 		$criteria->params=array(':id'=>$publication);
 		$criteria->order='fld_keyword ASC';
 
