@@ -82,7 +82,6 @@ if($model->isNewRecord){
 	$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'folder-grid',
 			'dataProvider'=>$gridModel->search(),
-			'filter'=>$gridModel,
 			'columns'=>array(
 					'fld_group_name',
 					'fld_order',

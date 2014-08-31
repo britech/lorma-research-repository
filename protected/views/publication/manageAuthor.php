@@ -81,12 +81,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'author-grid',
 	'dataProvider'=>$gridModel->search(),
 	'columns'=>array(
-		'fld_lname',
-		'fld_fname',
-		'fld_mname',
+		array(
+			'name'=>'fld_lname',
+			'sortable'=>false
+		),
+		array(
+			'name'=>'fld_fname',
+			'sortable'=>false
+		),
+		array(
+			'name'=>'fld_mname',
+			'sortable'=>false
+		),
 		array(
 			'name'=>'key_dept',
 			'value'=>'$data->department->fld_name',
+			'sortable'=>false
 		),
 		array(
 			'class'=>'CButtonColumn',

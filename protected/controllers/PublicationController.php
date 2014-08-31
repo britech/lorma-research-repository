@@ -137,10 +137,22 @@ class PublicationController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Publication', array('criteria'=>array('order'=>'fld_date_stored DESC')));
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		if(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR)){
+			$dataProvider=new CActiveDataProvider('Publication', array('criteria'=>array('order'=>'fld_date_stored DESC')));
+			$this->render('index',array(
+				'dataProvider'=>$dataProvider,
+			));	
+		} else{
+			$model = new Publication('search');
+			$model->unsetAttributes();
+			if(isset($_GET['Publication'])){
+				$model->attributes = $_GET['Publication'];
+			}
+
+			$this->render('index',array(
+				'model'=>$model,
+			));
+		}
 	}
 
 	/**

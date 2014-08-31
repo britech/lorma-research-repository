@@ -15,7 +15,23 @@ $this->menu=array(
 
 <h1>Publications</h1>
 
-<?php $this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'_view',
-)); ?>
+<?php 
+if(Yii::app()->user->isGuest || Yii::app()->user->checkAccess(User::RESTRICTION_REGULAR)){
+	$this->widget('zii.widgets.CListView', array(
+		'dataProvider'=>$dataProvider,
+		'itemView'=>'_view',
+	)); 	
+} else{
+	$this->widget('zii.widgets.grid.CGridView', array(
+		'dataProvider'=>$model->search(),
+		'filter'=>$model,
+		'columns'=>array(
+			'fld_pub_title',
+			array(
+				'class'=>'CButtonColumn',
+				'template'=>'{view}',
+			),
+		),
+	));
+}
+?>
